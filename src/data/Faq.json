@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Apa itu kopi Arabika?",
+    "jawaban": "Kopi Arabika adalah jenis kopi yang memiliki rasa asam yang khas dan aroma yang kompleks."
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Bagaimana cara menyimpan kopi?",
+    "jawaban": "Kopi sebaiknya disimpan dalam wadah kedap udara di tempat yang sejuk dan gelap."
+  }
+]

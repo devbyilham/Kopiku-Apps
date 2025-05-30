@@ -1,6 +1,6 @@
 import React from "react";
 import { MdOutlinePayments } from "react-icons/md";
-import CardCountData from "./CardCount.json";
+import CardCountData from "../data/CardCount.json";
 
 export default function CardCount() {
   return (

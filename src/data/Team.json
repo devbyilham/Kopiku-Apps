@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "nama": "Rina Andini",
+    "jabatan": "Barista Senior",
+    "foto": "https://i.pravatar.cc/100?img=1"
+  },
+  {
+    "id": 2,
+    "nama": "Dimas Saputra",
+    "jabatan": "Manajer Operasional",
+    "foto": "https://i.pravatar.cc/100?img=2"
+  }
+]

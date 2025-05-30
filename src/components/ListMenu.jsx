@@ -1,3 +1,7 @@
+import { AiFillContacts } from "react-icons/ai";
+import { AiOutlineBook } from "react-icons/ai";
+import { RiTeamFill } from "react-icons/ri";
+import { FaQuestionCircle } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { VscListSelection } from "react-icons/vsc";
@@ -52,6 +56,26 @@ export default function ListMenu() {
         <li>
           <NavLink id="menu-7" to="error403" className={menuClass}>
             <BiMessageSquareError />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-8" to="faq" className={menuClass}>
+            <FaQuestionCircle />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-9" to="team" className={menuClass}>
+            <RiTeamFill />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-10" to="booking" className={menuClass}>
+            <AiOutlineBook />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-11" to="contact" className={menuClass}>
+            <AiFillContacts />
           </NavLink>
         </li>
       </ul>

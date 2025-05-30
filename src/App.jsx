@@ -15,6 +15,10 @@ const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const Loading = React.lazy(() => import("./components/Loading"));
+const Faq = React.lazy(() => import("./pages/Faq"));
+const Team = React.lazy(() => import("./pages/Team"));
+const Booking = React.lazy(() => import("./pages/Booking"));
+const Contact = React.lazy(() => import("./pages/Contact"));
 
 export default function App() {
   return (
@@ -29,6 +33,11 @@ export default function App() {
           <Route path="/error400" element={<Error400 />} />
           <Route path="/error401" element={<Error401 />} />
           <Route path="/error403" element={<Error403 />} />
+          
+          <Route path="faq" element={<Faq />} />
+          <Route path="team" element={<Team />} />
+          <Route path="booking" element={<Booking />} />
+          <Route path="contact" element={<Contact />} />
         </Route>
         <Route path="*" element={<NotFound />} />
 

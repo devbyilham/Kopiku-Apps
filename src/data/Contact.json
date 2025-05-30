@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nama": "Dewi Anggraeni",
+    "email": "dewi@example.com",
+    "subjek": "Pertanyaan tentang menu kopi",
+    "pesan": "Apakah kalian menyediakan kopi dengan varian single origin?"
+  },
+  {
+    "id": 2,
+    "nama": "Riko Santoso",
+    "email": "riko@example.com",
+    "subjek": "Saran untuk jam buka",
+    "pesan": "Kalau bisa jam bukanya diperpanjang sampai malam ya, thanks!"
+  },
+  {
+    "id": 3,
+    "nama": "Lina Marlina",
+    "email": "lina@example.com",
+    "subjek": "Kerjasama event",
+    "pesan": "Saya ingin menanyakan kemungkinan kerjasama untuk event komunitas."
+  }
+]

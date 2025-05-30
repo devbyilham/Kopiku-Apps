@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "namaUser": "Andi Saputra",
+    "tanggal": "2025-06-01",
+    "jam": "10:00",
+    "keterangan": "Meeting dengan klien"
+  },
+  {
+    "id": 2,
+    "namaUser": "Rina Putri",
+    "tanggal": "2025-06-02",
+    "jam": "14:30",
+    "keterangan": "Diskusi project baru"
+  },
+  {
+    "id": 3,
+    "namaUser": "Budi Santoso",
+    "tanggal": "2025-06-05",
+    "jam": "09:00",
+    "keterangan": "Training internal"
+  }
+]

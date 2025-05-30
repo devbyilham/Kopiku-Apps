@@ -1,4 +1,4 @@
-import KopiData from "../components/Kopi.json";
+import KopiData from "../data/Kopi.json";
 import { useState } from "react";
 
 export default function ListMenu() {
