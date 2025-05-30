@@ -2,7 +2,7 @@
     {
       "id": 1,
       "gambar": "/image/espresso.jpg",
-      "nama": "Hitam",
+      "nama": "Espresso",
       "deskripsi": "Kopi hitam dengan rasa strong dan sedikit pahit",
       "rating": 4.0,
       "harga": 25000,
