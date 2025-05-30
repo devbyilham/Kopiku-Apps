@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --font-barlow: "Barlow", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-poppins-extrabold: "Poppins Extra Bold", sans-serif;
+  --color-latar: #f3f4f6;
+  --color-teks: #374151;
+  --color-header: #523628;
+  --color-accent: #6c4432;
+  --color-primary: #b35b47;
+  --color-hover: #dcdcdc;
+  --color-muted: #374151;
+  --color-white: #ffffff;
+  --color-gray: #e0e0e0;
+  --color-border: #754e3d;
+  --color-coklat: #6c4432;
+}

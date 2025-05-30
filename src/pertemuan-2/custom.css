@@ -1,0 +1,148 @@
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #523628;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Card Styles */
+.cardLogin, .cardProfil {
+  background-color: #754e3d;
+  padding: 2rem;
+  border-radius: 8px; /* Lebih kecil */
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+}
+
+.cardLogin:hover, .cardProfil:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Login Styles */
+.login-container {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  margin-top: -0.5rem;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.input-field {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px; /* Lebih kecil */
+  background-color: #fff;
+  color: #333;
+  transition: all 0.3s;
+}
+
+.input-field:focus {
+  outline: none;
+  box-shadow: 0px 0px 6px rgba(255, 255, 255, 0.5);
+}
+
+.btn-submit {
+  background-color: #f08c50;
+  color: white;
+  padding: 0.8rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px; /* Lebih kecil */
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 1.5rem;
+}
+
+.btn-submit:hover {
+  background-color: #d9773a;
+  transform: scale(1.03);
+}
+
+.login-image {
+  width: 250px;
+  height: auto;
+  border-radius: 8px; /* Lebih kecil */
+  transition: transform 0.3s;
+}
+
+.login-image:hover {
+  transform: scale(1.03);
+}
+
+/* Profil Styles */
+.profil-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.profil-title {
+  font-size: 1.5rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: none;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px; /* Lebih kecil */
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.social-link:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+.social-icon {
+  width: 30px;
+  height: 30px;
+}

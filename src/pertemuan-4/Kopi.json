@@ -1,0 +1,262 @@
+  [
+    {
+      "id": 1,
+      "gambar": "/image/espresso.jpg",
+      "nama": "Espresso",
+      "deskripsi": "Kopi hitam dengan rasa strong dan sedikit pahit",
+      "rating": 4.0,
+      "harga": 25000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Tinggi",
+        "takaran": "30ml"
+      }
+    },
+    {
+      "id": 2,
+      "gambar": "/image/cappuccino.jpg",
+      "nama": "Cappuccino",
+      "deskripsi": "Perpaduan espresso, susu serta busa yang lembut",
+      "rating": 4.9,
+      "harga": 30000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Sedang",
+        "takaran": "100ml"
+      }
+    },
+    {
+      "id": 3,
+      "gambar": "/image/latte.jpg",
+      "nama": "Latte",
+      "deskripsi": "Espresso dengan lebih banyak susu",
+      "rating": 4.3,
+      "harga": 32000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Sedang",
+        "takaran": "240ml"
+      }
+    },
+    {
+      "id": 4,
+      "gambar": "/image/americano.jpg",
+      "nama": "Americano",
+      "deskripsi": "Espresso dengan tambahan air panas",
+      "rating": 3.8,
+      "harga": 27000,
+      "detail": {
+        "asal": "Amerika",
+        "kafein": "Tinggi",
+        "takaran": "240ml"
+      }
+    },
+    {
+      "id": 5,
+      "gambar": "/image/mocha.jpg",
+      "nama": "Mocha",
+      "deskripsi": "Espresso dengan campuran cokelat dan susu",
+      "rating": 4.2,
+      "harga": 35000,
+      "detail": {
+        "asal": "Yaman",
+        "kafein": "Sedang",
+        "takaran": "250ml"
+      }
+    },
+    {
+      "id": 6,
+      "gambar": "/image/macchiato.jpg",
+      "nama": "Macchiato",
+      "deskripsi": "Espresso dengan sedikit susu berbusa",
+      "rating": 4.3,
+      "harga": 28000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Tinggi",
+        "takaran": "90ml"
+      }
+    },
+    {
+      "id": 7,
+      "gambar": "/image/flatWhite.jpg",
+      "nama": "Flat White",
+      "deskripsi": "Latte dengan setengah susu dan setengah espresso",
+      "rating": 4.4,
+      "harga": 33000,
+      "detail": {
+        "asal": "Australia",
+        "kafein": "Sedang",
+        "takaran": "200ml"
+      }
+    },
+    {
+      "id": 8,
+      "gambar": "/image/affogato.jpg",
+      "nama": "Affogato",
+      "deskripsi": "Espresso yang diberi es krim vanilla",
+      "rating": 4.9,
+      "harga": 38000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Sedang",
+        "takaran": "150ml"
+      }
+    },
+    {
+      "id": 9,
+      "gambar": "/image/coldBrew.jpg",
+      "nama": "Cold Brew",
+      "deskripsi": "Kopi yang diseduh dingin selama 12 jam",
+      "rating": 3.8,
+      "harga": 35000,
+      "detail": {
+        "asal": "Amerika",
+        "kafein": "Tinggi",
+        "takaran": "300ml"
+      }
+    },
+    {
+      "id": 10,
+      "gambar": "/image/kopiVietnam.jpg",
+      "nama": "Kopi Vietnam",
+      "deskripsi": "Kopi hitam khas Vietnam dengan susu kental manis",
+      "rating": 4.0,
+      "harga": 29000,
+      "detail": {
+        "asal": "Vietnam",
+        "kafein": "Tinggi",
+        "takaran": "200ml"
+      }
+    },
+    {
+      "id": 11,
+      "gambar": "/image/turkishCoffee.jpg",
+      "nama": "Turkish Coffee",
+      "deskripsi": "Kopi bubuk yang diseduh dengan gula",
+      "rating": 4.5,
+      "harga": 32000,
+      "detail": {
+        "asal": "Turki",
+        "kafein": "Tinggi",
+        "takaran": "100ml"
+      }
+    },
+    {
+      "id": 12,
+      "gambar": "/image/cortado.jpg",
+      "nama": "Cortado",
+      "deskripsi": "Espresso yang dicampur dengan susu",
+      "rating": 4.5,
+      "harga": 29000,
+      "detail": {
+        "asal": "Spanyol",
+        "kafein": "Sedang",
+        "takaran": "150ml"
+      }
+    },
+    {
+      "id": 13,
+      "gambar": "/image/ristretto.jpg",
+      "nama": "Ristretto",
+      "deskripsi": "Versi lebih pekat dari espresso dengan sedikit air",
+      "rating": 4.0,
+      "harga": 26000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Tinggi",
+        "takaran": "25ml"
+      }
+    },
+    {
+      "id": 14,
+      "gambar": "/image/doppio.jpg",
+      "nama": "Doppio",
+      "deskripsi": "Dua shot espresso untuk rasa yang lebih kuat",
+      "rating": 4.1,
+      "harga": 28000,
+      "detail": {
+        "asal": "Italia",
+        "kafein": "Tinggi",
+        "takaran": "60ml"
+      }
+    },
+    {
+      "id": 15,
+      "gambar": "/image/redEye.jpg",
+      "nama": "Red Eye",
+      "deskripsi": "Kopi hitam dengan tambahan satu shot espresso",
+      "rating": 4.3,
+      "harga": 33000,
+      "detail": {
+        "asal": "Amerika",
+        "kafein": "Sangat Tinggi",
+        "takaran": "300ml"
+      }
+    },
+    {
+      "id": 16,
+      "gambar": "/image/greenCoffee.jpg",
+      "nama": "Green Coffee",
+      "deskripsi": "Kopi dari biji mentah yang tidak dipanggang",
+      "rating": 4.1,
+      "harga": 35000,
+      "detail": {
+        "asal": "Ethiopia",
+        "kafein": "Sedang",
+        "takaran": "250ml"
+      }
+    },
+    {
+      "id": 17,
+      "gambar": "/image/kopiTubruk.jpg",
+      "nama": "Kopi Tubruk",
+      "deskripsi": "Kopi khas Indonesia yang diseduh langsung dengan ampasnya",
+      "rating": 4.9,
+      "harga": 25000,
+      "detail": {
+        "asal": "Indonesia",
+        "kafein": "Sedang",
+        "takaran": "200ml"
+      }
+    },
+    {
+      "id": 18,
+      "gambar": "/image/kopiLuwak.jpg",
+      "nama": "Kopi Luwak",
+      "deskripsi": "Kopi dari biji yang dicerna oleh luwak",
+      "rating": 4.8,
+      "harga": 15000,
+      "detail": {
+        "asal": "Indonesia",
+        "kafein": "Sedang",
+        "takaran": "120ml"
+      }
+    },
+    {
+      "id": 19,
+      "gambar": "/image/bulletproofCoffee.jpg",
+      "nama": "Bulletproof Coffee",
+      "deskripsi": "Kopi dengan mentega dan minyak MCT",
+      "rating": 4.0,
+      "harga": 40000,
+      "detail": {
+        "asal": "Amerika",
+        "kafein": "Tinggi",
+        "takaran": "300ml"
+      }
+    },
+    {
+      "id": 20,
+      "gambar": "/image/mazagran.jpg",
+      "nama": "Mazagran",
+      "deskripsi": "Kopi dingin khas Portugal dengan diberi lemon",
+      "rating": 4.5,
+      "harga": 31000,
+      "detail": {
+        "asal": "Portugal",
+        "kafein": "Sedang",
+        "takaran": "250ml"
+      }
+    }
+  ]

@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "gambar": "/image/espresso.jpg",
+    "nama": "Espresso",
+    "deskripsi": "Kopi hitam dengan rasa strong dan sedikit pahit",
+    "rating": 4.0,
+    "harga": 25000,
+    "detail": {
+      "asal": "Italia",
+      "kafein": "Tinggi",
+      "takaran": "30ml"
+    }
+  },
+  {
+    "id": 2,
+    "gambar": "/image/cappuccino.jpg",
+    "nama": "Cappuccino",
+    "deskripsi": "Perpaduan espresso, susu serta busa yang lembut",
+    "rating": 4.9,
+    "harga": 30000,
+    "detail": {
+      "asal": "Italia",
+      "kafein": "Sedang",
+      "takaran": "100ml"
+    }
+  },
+  {
+    "id": 3,
+    "gambar": "/image/latte.jpg",
+    "nama": "Latte",
+    "deskripsi": "Espresso dengan lebih banyak susu",
+    "rating": 4.3,
+    "harga": 32000,
+    "detail": {
+      "asal": "Italia",
+      "kafein": "Sedang",
+      "takaran": "240ml"
+    }
+  },
+  {
+    "id": 4,
+    "gambar": "/image/americano.jpg",
+    "nama": "Americano",
+    "deskripsi": "Espresso dengan tambahan air panas",
+    "rating": 3.8,
+    "harga": 27000,
+    "detail": {
+      "asal": "Amerika",
+      "kafein": "Tinggi",
+      "takaran": "240ml"
+    }
+  }
+]
