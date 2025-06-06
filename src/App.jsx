@@ -48,7 +48,7 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="contact/:id" element={<ContactDetail />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} /> 
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
