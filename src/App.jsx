@@ -16,9 +16,13 @@ const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const Loading = React.lazy(() => import("./components/Loading"));
 const Faq = React.lazy(() => import("./pages/Faq"));
+const FaqForm = React.lazy(() => import("./pages/FaqForm"));
 const Team = React.lazy(() => import("./pages/Team"));
+const TeamForm = React.lazy(() => import("./pages/TeamForm"));
 const Booking = React.lazy(() => import("./pages/Booking"));
+const BookingDetail = React.lazy(() => import("./pages/BookingDetail"));
 const Contact = React.lazy(() => import("./pages/Contact"));
+const ContactDetail = React.lazy(() => import("./pages/ContactDetail"));
 
 export default function App() {
   return (
@@ -33,11 +37,16 @@ export default function App() {
           <Route path="/error400" element={<Error400 />} />
           <Route path="/error401" element={<Error401 />} />
           <Route path="/error403" element={<Error403 />} />
-          
+
           <Route path="faq" element={<Faq />} />
+          <Route path="faq/:id" element={<FaqForm />} />
           <Route path="team" element={<Team />} />
+          <Route path="team/:id" element={<TeamForm />} />
+          <Route path="team/add" element={<TeamForm />} />
           <Route path="booking" element={<Booking />} />
+          <Route path="booking/:id" element={<BookingDetail />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="contact/:id" element={<ContactDetail />} />
         </Route>
         <Route path="*" element={<NotFound />} />
 

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ContactMessages from "../data/Contact.json";
+import { Link } from "react-router-dom";
 
-export default function ContactInboxManager() {
+export default function Contact() {
   const [search, setSearch] = useState("");
 
   // Filter berdasarkan nama, email, subjek, atau pesan (case insensitive)
@@ -54,7 +55,12 @@ export default function ContactInboxManager() {
                       {index + 1}
                     </td>
                     <td className="border border-white/20 px-4 py-3">
-                      {msg.nama}
+                      <Link
+                        to={`/contact/${msg.id}`}
+                        className="text-[#f4eae6] hover:underline"
+                      >
+                        {msg.nama}
+                      </Link>
                     </td>
                     <td className="border border-white/20 px-4 py-3">
                       {msg.email}

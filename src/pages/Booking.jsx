@@ -1,7 +1,8 @@
 import { useState } from "react";
 import BookingData from "../data/Booking.json";
+import { Link } from "react-router-dom";
 
-export default function BookingManager() {
+export default function Booking() {
   const [search, setSearch] = useState("");
 
   // Filter booking berdasarkan namaUser atau keterangan (case insensitive)
@@ -26,7 +27,7 @@ export default function BookingManager() {
           placeholder="🔍 Cari nama user atau keterangan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-3 mb-6 rounded text-black w-full"
+          className="p-3 mb-6 rounded text-white w-full"
         />
 
         {/* List Booking */}
@@ -52,7 +53,12 @@ export default function BookingManager() {
                       {index + 1}
                     </td>
                     <td className="border border-white/20 px-4 py-3">
-                      {booking.namaUser}
+                      <Link
+                        to={`/booking/${booking.id}`}
+                        className="text-[#f4eae6] hover:underline"
+                      >
+                        {booking.namaUser}
+                      </Link>
                     </td>
                     <td className="border border-white/20 px-4 py-3">
                       {booking.tanggal}
