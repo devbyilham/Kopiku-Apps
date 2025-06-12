@@ -1,40 +1,39 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react"; // Tambahkan useEffect dan useState
-// import ContactMessages from "../data/Contact.json"; // Hapus atau komentari ini
-import { KontakAPI } from "../services/KontakAPI"; // <-- Import KontakAPI Anda
+import { useEffect, useState } from "react";
+import { KontakAPI } from "../services/KontakAPI";
+
+import AlertBox from "../components/AlertBox";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function ContactDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState(null); // State untuk menyimpan detail pesan
-  const [loading, setLoading] = useState(true); // State untuk loading
-  const [error, setError] = useState(null); // State untuk error
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMessageDetails = async () => {
       setLoading(true);
       setError(null);
 
-      // Validasi ID yang diterima dari URL
       const parsedId = parseInt(id);
       if (isNaN(parsedId)) {
         setError("ID Pesan tidak valid.");
         setLoading(false);
         console.error("Invalid Message ID:", id);
-        // Mungkin arahkan kembali ke daftar pesan jika ID tidak valid
         navigate("/contact");
         return;
       }
 
       try {
-        // Panggil getKontakById dari KontakAPI
         const data = await KontakAPI.getKontakById(parsedId);
         if (data) {
           setMessage(data);
         } else {
           setError("Pesan tidak ditemukan.");
-          navigate("/contact"); // Redirect jika pesan tidak ditemukan
+          navigate("/contact");
         }
       } catch (err) {
         setError("Gagal memuat detail pesan: " + err.message);
@@ -45,25 +44,23 @@ export default function ContactDetail() {
     };
 
     fetchMessageDetails();
-  }, [id, navigate]); // Dependensi: id dan navigate
+  }, [id, navigate]);
 
-  // Tampilkan loading state
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-        <p className="text-lg font-medium">Memuat detail pesan...</p>
+        <LoadingSpinner text="Memuat detail pesan..." />
       </div>
     );
   }
 
-  // Tampilkan error state
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-red-500 font-poppins px-4 py-10">
-        <p className="text-lg font-medium mb-4">{error}</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
+        <AlertBox type="error">{error}</AlertBox>
         <button
           onClick={() => navigate("/contact")}
-          className="px-6 py-3 bg-[#8b5e3c] rounded-xl hover:bg-[#a06c47] text-white font-semibold transition shadow-md focus:outline-none focus:ring-2 focus:ring-[#a06c47] focus:ring-offset-2 focus:ring-offset-[#523628]"
+          className="mt-4 px-6 py-3 bg-[#8b5e3c] rounded-xl hover:bg-[#a06c47] text-white font-semibold transition shadow-md focus:outline-none focus:ring-2 focus:ring-[#a06c47] focus:ring-offset-2 focus:ring-offset-[#523628]"
         >
           Kembali ke daftar pesan
         </button>
@@ -71,7 +68,6 @@ export default function ContactDetail() {
     );
   }
 
-  // Jika pesan tidak ditemukan setelah loading selesai dan tidak ada error
   if (!message) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">

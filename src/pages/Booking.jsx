@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { BookingAPI } from "../services/BookingAPI";
 import { Link } from "react-router-dom";
 
+import AlertBox from "../components/AlertBox";
+import LoadingSpinner from "../components/LoadingSpinner";
+import EmptyState from "../components/EmptyState";
+
 export default function Booking() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,7 +23,6 @@ export default function Booking() {
       setError("");
       const data = await BookingAPI.fetchBooking();
       setBookingList(data);
-      // console.log("Data diterima dari API:", data); // DEBUG: Hapus log ini setelah debugging selesai
     } catch (err) {
       setError("Gagal memuat daftar booking.");
       console.error("Error loading bookings:", err);
@@ -37,112 +40,96 @@ export default function Booking() {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins p-6">
-      <div className="w-full max-w-5xl">
-        <h1 className="text-3xl font-bold text-center mb-10 drop-shadow-md">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
+      <div className="w-full max-w-5xl space-y-6">
+        <h1 className="text-4xl font-bold text-center drop-shadow-md mb-8">
           Manajemen Booking
         </h1>
 
-        {error && (
-          <div className="bg-red-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
-            {error}
-          </div>
-        )}
+        {error && <AlertBox type="error">{error}</AlertBox>}
 
         <input
           type="text"
           placeholder="🔍 Cari nama user atau keterangan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md mb-6"
+          className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           disabled={loading}
         />
 
         <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10">
-          <table className="min-w-full table-auto border-collapse border border-white/30 text-center">
-            <thead className="bg-[#754e3d] font-semibold text-sm">
-              <tr>
-                <th className="border border-white/20 px-4 py-3">No</th>
-                <th className="border border-white/20 px-4 py-3">Nama User</th>
-                {/* --- Kolom Tanggal Dihapus dari Header --- */}
-                <th className="border border-white/20 px-4 py-3">Jam</th>
-                <th className="border border-white/20 px-4 py-3">Keterangan</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse">
+              <thead className="bg-[#523628] font-semibold text-sm">
                 <tr>
-                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
-                  <td
-                    colSpan={4}
-                    className="p-8 text-center text-white text-lg font-medium"
-                  >
-                    Memuat daftar booking...
-                  </td>
+                  <th className="border-b border-white/20 px-4 py-3 text-left">
+                    No
+                  </th>
+                  <th className="border-b border-white/20 px-4 py-3 text-left">
+                    Nama User
+                  </th>
+                  <th className="border-b border-white/20 px-4 py-3 text-left">
+                    Jam
+                  </th>
+                  <th className="border-b border-white/20 px-4 py-3 text-left">
+                    Keterangan
+                  </th>
                 </tr>
-              )}
+              </thead>
+              <tbody>
+                {loading && (
+                  <tr>
+                    <td colSpan={4}>
+                      <LoadingSpinner text="Memuat daftar booking..." />
+                    </td>
+                  </tr>
+                )}
 
-              {!loading && filteredBooking.length === 0 && !error && (
-                <tr>
-                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
-                  <td
-                    colSpan={4}
-                    className="p-8 text-center text-white/70 text-lg font-medium"
-                  >
-                    Tidak ada booking ditemukan.
-                  </td>
-                </tr>
-              )}
+                {!loading && filteredBooking.length === 0 && !error && (
+                  <tr>
+                    <td colSpan={4}>
+                      <EmptyState text="Tidak ada booking ditemukan." />
+                    </td>
+                  </tr>
+                )}
 
-              {!loading && filteredBooking.length === 0 && error && (
-                <tr>
-                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
-                  <td
-                    colSpan={4}
-                    className="p-8 text-center text-red-500 text-lg font-medium"
-                  >
-                    {error} Coba lagi nanti.
-                  </td>
-                </tr>
-              )}
+                {!loading && filteredBooking.length === 0 && error && (
+                  <tr>
+                    <td colSpan={4}>
+                      <EmptyState text={`${error} Coba lagi nanti.`} />
+                    </td>
+                  </tr>
+                )}
 
-              {!loading && filteredBooking.length > 0
-                ? filteredBooking.map((booking, index) => {
-                    // DEBUG: Hapus log ini setelah debugging selesai
-                    // console.log(`Booking ${booking.id}:`, booking);
-                    // console.log(`Tanggal mentah untuk booking ${booking.id}:`, booking.tanggal);
-                    // console.log(`Hasil new Date() untuk booking ${booking.id}:`, new Date(booking.tanggal));
-                    // console.log(`Hasil .toLocaleDateString() untuk booking ${booking.id}:`, booking.tanggal ? new Date(booking.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Tanggal tidak valid atau kosong');
-
-                    return (
+                {!loading && filteredBooking.length > 0
+                  ? filteredBooking.map((booking, index) => (
                       <tr
                         key={booking.id}
-                        className="hover:bg-[#8b5e3c]/50 transition text-sm"
+                        className="hover:bg-[#7a5342] transition-colors duration-150"
                       >
-                        <td className="border border-white/20 px-4 py-3 font-semibold">
-                          {index + 1}
+                        <td className="border-b border-white/10 px-4 py-3 font-semibold text-white/90 text-left">
+                          {index + 1}.
                         </td>
-                        <td className="border border-white/20 px-4 py-3">
+                        <td className="border-b border-white/10 px-4 py-3 text-left">
                           <Link
                             to={`/booking/${booking.id}`}
-                            className="text-[#f4eae6] hover:underline"
+                            className="text-[#f4eae6] hover:underline font-medium"
                           >
                             {booking.nama}
                           </Link>
                         </td>
-                        {/* --- Kolom Tanggal Dihapus dari Body --- */}
-                        <td className="border border-white/20 px-4 py-3">
+                        <td className="border-b border-white/10 px-4 py-3 text-white/90 text-left">
                           {booking.jam}
                         </td>
-                        <td className="border border-white/20 px-4 py-3 text-justify">
+                        <td className="border-b border-white/10 px-4 py-3 text-justify text-white/90 line-clamp-2">
                           {booking.keterangan || "-"}
                         </td>
                       </tr>
-                    );
-                  })
-                : null}
-            </tbody>
-          </table>
+                    ))
+                  : null}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

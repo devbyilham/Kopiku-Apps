@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react"; // Tambahkan useEffect
+import { useState, useEffect } from "react";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-// import TeamData from "../data/Team.json"; // Hapus atau komentari ini
-import { TimAPI } from "../services/TimAPI"; // <-- Import TimAPI Anda
+import { TimAPI } from "../services/TimAPI";
+
+import AlertBox from "../components/AlertBox";
+import LoadingSpinner from "../components/LoadingSpinner";
+import EmptyState from "../components/EmptyState";
 
 export default function Team() {
-  const [teamList, setTeamList] = useState([]); // Awalnya kosong, akan diisi dari API
+  const [teamList, setTeamList] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false); // State untuk loading
-  const [error, setError] = useState(""); // State untuk error
-  const [success, setSuccess] = useState(""); // State untuk pesan sukses
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  // Memuat data tim saat komponen pertama kali di-render
   useEffect(() => {
     loadTeamMembers();
   }, []);
 
-  // Fungsi untuk memuat data tim dari API
   const loadTeamMembers = async () => {
     try {
       setLoading(true);
       setError("");
-      // Panggil fungsi untuk mengambil semua anggota tim dari API
-      const data = await TimAPI.fetchTim(); // Menggunakan fetchTim sesuai TimAPI
+      const data = await TimAPI.fetchTim();
       setTeamList(data);
     } catch (err) {
       setError("Gagal memuat data tim.");
@@ -40,10 +40,10 @@ export default function Team() {
         setError("");
         setSuccess("");
 
-        await TimAPI.deleteTim(id); // Menggunakan deleteTim sesuai TimAPI
+        await TimAPI.deleteTim(id);
         setSuccess("Anggota tim berhasil dihapus!");
-        setTimeout(() => setSuccess(""), 3000); // Sembunyikan pesan setelah 3 detik
-        loadTeamMembers(); // Muat ulang daftar tim setelah penghapusan
+        setTimeout(() => setSuccess(""), 3000);
+        loadTeamMembers();
       } catch (err) {
         setError(`Terjadi kesalahan: ${err.message}`);
         console.error("Error deleting team member:", err);
@@ -64,19 +64,13 @@ export default function Team() {
           👥 Manajemen Tim/Karyawan
         </h1>
 
-        {/* Pesan Error dan Sukses sederhana */}
-        {error && (
-          <div className="bg-red-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
-            {error}
-          </div>
-        )}
+        {error && <AlertBox type="error">{error}</AlertBox>}
         {success && (
           <div className="bg-green-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
             {success}
           </div>
         )}
 
-        {/* Tombol Tambah dengan Link */}
         <Link
           to="/team/add"
           className="flex items-center justify-center gap-2 bg-[#8b5e3c] hover:bg-[#a06c47] w-full py-2 rounded font-semibold text-white transition shadow-md"
@@ -84,7 +78,6 @@ export default function Team() {
           <PlusCircle size={18} /> Tambah Anggota Tim
         </Link>
 
-        {/* Search Input */}
         <input
           type="text"
           placeholder="🔍 Cari anggota tim..."
@@ -94,28 +87,24 @@ export default function Team() {
           disabled={loading}
         />
 
-        {/* Loading Indicator */}
         {loading && (
           <div className="p-8 text-center text-white text-lg font-medium">
-            Memuat anggota tim...
+            <LoadingSpinner text="Memuat anggota tim..." />
           </div>
         )}
 
-        {/* Empty State */}
         {!loading && filteredTeam.length === 0 && !error && (
-          <p className="text-center text-white/70 col-span-full p-8 text-lg font-medium">
-            Tidak ada anggota tim ditemukan.
+          <p className="text-center col-span-full p-8 text-lg font-medium">
+            <EmptyState text="Tidak ada anggota tim ditemukan." />
           </p>
         )}
 
-        {/* Error State when data is empty */}
         {!loading && filteredTeam.length === 0 && error && (
           <div className="p-8 text-center text-red-500 text-lg font-medium">
-            Terjadi Kesalahan. Coba lagi nanti.
+            <EmptyState text={`${error} Coba lagi nanti.`} />
           </div>
         )}
 
-        {/* List Tim */}
         {!loading && filteredTeam.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {filteredTeam.map((member) => (
@@ -124,28 +113,24 @@ export default function Team() {
                 className="p-4 rounded-lg bg-[#6c4432] hover:shadow-lg transition duration-200 border border-white/10 flex gap-4 items-center shadow-md"
               >
                 <img
-                  src={member.foto || "https://via.placeholder.com/80"} // Fallback image
+                  src={member.foto || "https://via.placeholder.com/80"}
                   alt={member.nama}
                   className="w-20 h-20 object-cover rounded-full border-2 border-white/30"
                 />
                 <div className="flex-1">
                   <h3 className="font-bold text-lg text-white">
                     {member.nama}
-                  </h3>{" "}
-                  {/* Pastikan teks nama kontras */}
-                  <p className="text-sm text-gray-300">{member.jabatan}</p>{" "}
-                  {/* Kontras lebih baik */}
+                  </h3>
+                  <p className="text-sm text-gray-300">{member.jabatan}</p>
                   <div className="mt-2 flex gap-2">
-                    {/* Link ke halaman edit */}
                     <Link
-                      to={`/team/${member.id}`} // Asumsikan Anda memiliki rute ini
+                      to={`/team/${member.id}`}
                       className="text-yellow-300 hover:text-yellow-400 transition"
                       title="Edit"
                     >
                       <Pencil size={20} />
                     </Link>
 
-                    {/* Tombol Hapus */}
                     <button
                       onClick={() => handleDelete(member.id)}
                       className="text-red-400 hover:text-red-500 transition"

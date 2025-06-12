@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co/rest/v1/booking"; // <-- URL Supabase tabel 'booking'
+const API_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co/rest/v1/booking";
 const API_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcWRjeXV0aXRzYmNneW1jZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NjM1NTEsImV4cCI6MjA2NTAzOTU1MX0.VqOO8YVWol_3CPibJwgL2zQmcwAwgm9XE-54Yj_FDVI"; // <-- API Key Supabase Anda
 
@@ -12,7 +12,6 @@ const headers = {
 
 export const BookingAPI = {
   async fetchBooking() {
-    // <--- Nama fungsi ini adalah 'fetchBooking' (tunggal)
     const response = await axios.get(API_URL, { headers });
     return response.data;
   },
