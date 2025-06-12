@@ -1,16 +1,38 @@
-import { useState } from "react";
-import BookingData from "../data/Booking.json";
+import { useState, useEffect } from "react";
+import { BookingAPI } from "../services/BookingAPI";
 import { Link } from "react-router-dom";
 
 export default function Booking() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [bookingList, setBookingList] = useState([]);
   const [search, setSearch] = useState("");
 
-  // Filter booking berdasarkan namaUser atau keterangan (case insensitive)
-  const filteredBooking = BookingData.filter((booking) => {
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  const loadBookings = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const data = await BookingAPI.fetchBooking();
+      setBookingList(data);
+      // console.log("Data diterima dari API:", data); // DEBUG: Hapus log ini setelah debugging selesai
+    } catch (err) {
+      setError("Gagal memuat daftar booking.");
+      console.error("Error loading bookings:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredBooking = bookingList.filter((booking) => {
     const term = search.toLowerCase();
     return (
-      booking.namaUser.toLowerCase().includes(term) ||
-      booking.keterangan.toLowerCase().includes(term)
+      booking.nama.toLowerCase().includes(term) ||
+      (booking.keterangan && booking.keterangan.toLowerCase().includes(term))
     );
   });
 
@@ -21,66 +43,104 @@ export default function Booking() {
           Manajemen Booking
         </h1>
 
-        {/* Search */}
+        {error && (
+          <div className="bg-red-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
+            {error}
+          </div>
+        )}
+
         <input
           type="text"
           placeholder="🔍 Cari nama user atau keterangan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-3 mb-6 rounded text-white w-full"
+          className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md mb-6"
+          disabled={loading}
         />
 
-        {/* List Booking */}
-        <div className="bg-[#6c4432] rounded-md shadow-md overflow-x-auto">
+        <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10">
           <table className="min-w-full table-auto border-collapse border border-white/30 text-center">
             <thead className="bg-[#754e3d] font-semibold text-sm">
               <tr>
                 <th className="border border-white/20 px-4 py-3">No</th>
                 <th className="border border-white/20 px-4 py-3">Nama User</th>
-                <th className="border border-white/20 px-4 py-3">Tanggal</th>
+                {/* --- Kolom Tanggal Dihapus dari Header --- */}
                 <th className="border border-white/20 px-4 py-3">Jam</th>
                 <th className="border border-white/20 px-4 py-3">Keterangan</th>
               </tr>
             </thead>
             <tbody>
-              {filteredBooking.length > 0 ? (
-                filteredBooking.map((booking, index) => (
-                  <tr
-                    key={booking.id}
-                    className="hover:bg-[#8b5e3c]/50 transition text-sm"
-                  >
-                    <td className="border border-white/20 px-4 py-3 font-semibold">
-                      {index + 1}
-                    </td>
-                    <td className="border border-white/20 px-4 py-3">
-                      <Link
-                        to={`/booking/${booking.id}`}
-                        className="text-[#f4eae6] hover:underline"
-                      >
-                        {booking.namaUser}
-                      </Link>
-                    </td>
-                    <td className="border border-white/20 px-4 py-3">
-                      {booking.tanggal}
-                    </td>
-                    <td className="border border-white/20 px-4 py-3">
-                      {booking.jam}
-                    </td>
-                    <td className="border border-white/20 px-4 py-3 text-justify">
-                      {booking.keterangan}
-                    </td>
-                  </tr>
-                ))
-              ) : (
+              {loading && (
                 <tr>
+                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
                   <td
-                    colSpan={5}
-                    className="p-4 text-center text-gray-300 italic"
+                    colSpan={4}
+                    className="p-8 text-center text-white text-lg font-medium"
                   >
-                    Tidak ada booking yang ditemukan.
+                    Memuat daftar booking...
                   </td>
                 </tr>
               )}
+
+              {!loading && filteredBooking.length === 0 && !error && (
+                <tr>
+                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
+                  <td
+                    colSpan={4}
+                    className="p-8 text-center text-white/70 text-lg font-medium"
+                  >
+                    Tidak ada booking ditemukan.
+                  </td>
+                </tr>
+              )}
+
+              {!loading && filteredBooking.length === 0 && error && (
+                <tr>
+                  {/* Sesuaikan colSpan karena satu kolom telah dihapus */}
+                  <td
+                    colSpan={4}
+                    className="p-8 text-center text-red-500 text-lg font-medium"
+                  >
+                    {error} Coba lagi nanti.
+                  </td>
+                </tr>
+              )}
+
+              {!loading && filteredBooking.length > 0
+                ? filteredBooking.map((booking, index) => {
+                    // DEBUG: Hapus log ini setelah debugging selesai
+                    // console.log(`Booking ${booking.id}:`, booking);
+                    // console.log(`Tanggal mentah untuk booking ${booking.id}:`, booking.tanggal);
+                    // console.log(`Hasil new Date() untuk booking ${booking.id}:`, new Date(booking.tanggal));
+                    // console.log(`Hasil .toLocaleDateString() untuk booking ${booking.id}:`, booking.tanggal ? new Date(booking.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Tanggal tidak valid atau kosong');
+
+                    return (
+                      <tr
+                        key={booking.id}
+                        className="hover:bg-[#8b5e3c]/50 transition text-sm"
+                      >
+                        <td className="border border-white/20 px-4 py-3 font-semibold">
+                          {index + 1}
+                        </td>
+                        <td className="border border-white/20 px-4 py-3">
+                          <Link
+                            to={`/booking/${booking.id}`}
+                            className="text-[#f4eae6] hover:underline"
+                          >
+                            {booking.nama}
+                          </Link>
+                        </td>
+                        {/* --- Kolom Tanggal Dihapus dari Body --- */}
+                        <td className="border border-white/20 px-4 py-3">
+                          {booking.jam}
+                        </td>
+                        <td className="border border-white/20 px-4 py-3 text-justify">
+                          {booking.keterangan || "-"}
+                        </td>
+                      </tr>
+                    );
+                  })
+                : null}
             </tbody>
           </table>
         </div>
