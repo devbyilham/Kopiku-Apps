@@ -1,5 +1,10 @@
 @import "tailwindcss";
+@import "tailwindcss";
 
+/** Tambahkan Ini **/
+@plugin "daisyui" {
+    themes: cupecake;
+}
 @theme {
   --font-barlow: "Barlow", sans-serif;
   --font-poppins: "Poppins", sans-serif;

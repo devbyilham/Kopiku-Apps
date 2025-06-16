@@ -5,10 +5,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import axios from "axios";
 
 export default function Header() {
-  const [advice, setAdvice] = useState(""); // State untuk menyimpan nasihat
-  const [adviceError, setAdviceError] = useState(null); // State untuk error API nasihat
-
-  // Mengambil nasihat saat komponen pertama kali dimuat
+  const [advice, setAdvice] = useState("");
+  const [adviceError, setAdviceError] = useState(null);
   useEffect(() => {
     axios
       .get("https://api.adviceslip.com/advice")
@@ -30,24 +28,16 @@ export default function Header() {
       {adviceError}
     </div>
   ) : (
-    <div className="text-sm font-light">
-      <p className="font-semibold text-lg">Wise Words</p>
-      <p className="italic">"{advice}"</p>
-    </div>
+    <div className="text-sm font-light">{advice}</div>
   );
 
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-[var(--color-header)] text-[var(--color-white)] shadow-md">
-      {/* Selamat datang pesan */}
       <div className="flex flex-col">
-        <p className="text-sm mt-2">Selamat datang di Doge Coffee Dashboard!</p>
-        <h2 className="text-lg font-bold">Always give the best service</h2>
+        <p className="text-lg font-bold">Selamat datang di Kopiku</p>
+        <h2> {adviceInfo}</h2>
       </div>
 
-      {/* Menampilkan Nasihat */}
-      {adviceInfo}
-
-      {/* Input pencarian */}
       <div className="relative w-full max-w-md mx-8">
         <input
           type="text"
@@ -57,18 +47,15 @@ export default function Header() {
         <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/70" />
       </div>
 
-      {/* Avatar dan opsi lainnya */}
       <div className="flex items-center space-x-4">
         <div className="text-xl hover:text-yellow-300 transition">
           <RiNotification4Line />
         </div>
-
-        <img
-          src="https://avatar.iran.liara.run/public/28"
-          alt="Avatar"
-          className="w-10 h-10 rounded-full border-2 border-yellow-300"
-        />
-
+        <div className="avatar">
+          <div className="ring-primary ring-offset-base-100 w-10 h-10 rounded-full ring-4 ring-offset-2">
+            <img src="/image/avatar.png" />
+          </div>
+        </div>
         <div className="flex flex-col text-sm">
           <span className="text-white/80">admin</span>
           <span className="font-bold">Diego</span>

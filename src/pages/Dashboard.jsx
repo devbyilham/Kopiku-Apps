@@ -11,8 +11,9 @@ export default function Dashboard() {
     { label: "Bubuk Kopi", icon: <GiCoffeeBeans />, active: false },
     { label: "Snack", icon: <PiBowlFoodBold />, active: false },
   ];
+
   return (
-    <div>
+    <div className="min-h-screen bg-[var(--color-header)] text-white">
       <PageHeader title="Menu Kopi" categories={categories} />
       <CardCount />
     </div>
