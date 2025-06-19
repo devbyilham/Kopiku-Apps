@@ -18,7 +18,7 @@ export default function Sidebar() {
 
       <div id="sidebar-footer" className="mt-auto flex justify-center pt-10">
         <div className="text-[35px] hover:text-yellow-300 transition">
-          <FiLogOut />
+          <FiLogOut /> 
         </div>
       </div>
     </div>
