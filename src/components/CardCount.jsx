@@ -4,28 +4,26 @@ import CardCountData from "../data/CardCount.json";
 
 export default function CardCount() {
   return (
-    <div className="p-6 grid gap-6 sm:grid-cols-2 md:grid-cols-4 font-poppins">
+    <div className="p-7 grid gap-6 sm:grid-cols-1 md:grid-cols-2 font-poppins">
       {CardCountData.map((item) => (
         <div
           key={item.id}
-          className="bg-latar rounded-xl shadow-lg overflow-hidden"
+          className="card card-side bg-[var(--color-accent)] shadow-md rounded-xl overflow-hidden"
         >
-          <div className="h-32 bg-[#6c4432] flex items-center justify-center">
+          <figure className="w-32 h-full bg-[#754e3d]">
             <img
               src={item.gambar}
               alt={item.nama}
-              className="h-24 object-contain"
+              className="w-full h-full object-cover"
             />
-          </div>
-
-          <div className="p-4 flex flex-col space-y-2 text-teks">
-            <h3 className="text-xl font-bold">{item.nama}</h3>
-            <p className="text-sm text-gray-600">{item.deskripsi}</p>
-
-            <div className="flex items-center justify-between pt-2 border-t border-gray-200">
-              <div className="flex items-center space-x-1">
-                <MdOutlinePayments className="text-2xl text-[#6c4432]" />
-                <span className="text-lg font-semibold">
+          </figure>
+          <div className="card-body text-white">
+            <h2 className="card-title text-[#f4eae6]">{item.nama}</h2>
+            <p className="text-sm text-[#d9cfc9]">{item.deskripsi}</p>
+            <div className="card-actions justify-between items-center mt-2">
+              <div className="flex items-center space-x-2">
+                <MdOutlinePayments className="text-xl text-[#f08c50]" />
+                <span className="text-base font-semibold text-[#f08c50]">
                   Rp {item.harga}
                 </span>
               </div>

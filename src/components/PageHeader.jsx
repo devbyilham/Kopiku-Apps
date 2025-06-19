@@ -2,7 +2,7 @@ import React from "react";
 
 export default function PageHeader({ categories, title }) {
   return (
-    <div className="bg-[var(--color-header)] pt-4 pb-10 font-poppins">
+    <div className="bg-[var(--color-header)] pt-4 font-poppins">
       <div className="flex justify-center space-x-4 mb-6">
         {categories.map((category, idx) => (
           <div
