@@ -1,19 +1,22 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Poppins:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-/** Tambahkan Ini **/
+/* DaisyUI Plugin */
 @plugin "daisyui" {
-    themes: cupecake;
+  themes: cupecake;
 }
+
+/* Custom Theme */
 @theme {
   --font-barlow: "Barlow", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-poppins-extrabold: "Poppins Extra Bold", sans-serif;
+
   --color-latar: #f3f4f6;
   --color-teks: #374151;
   --color-header: #523628;
   --color-accent: #6c4432;
-  --color-primary: #b35b47;
+  --color-primary: #f08c50;
   --color-hover: #dcdcdc;
   --color-muted: #374151;
   --color-white: #ffffff;

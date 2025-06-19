@@ -2,7 +2,7 @@ import React from "react";
 
 export default function PageHeader({ categories, title }) {
   return (
-    <div className="bg-[var(--color-header)] pt-4 pb-10">
+    <div className="bg-[var(--color-header)] pt-4 pb-10 font-poppins">
       <div className="flex justify-center space-x-4 mb-6">
         {categories.map((category, idx) => (
           <div
@@ -18,10 +18,11 @@ export default function PageHeader({ categories, title }) {
           </div>
         ))}
       </div>
-      
 
       <div className="px-6">
-        <h1 className="text-2xl text-[var(--color-white)] font-semibold">{title}</h1>
+        <h1 className="text-2xl text-[var(--color-white)] font-semibold">
+          {title}
+        </h1>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 export default function Gaji({ label, type, placeholder, onChange }) {
   return (
-    <div className="mb-1">
+    <div className="mb-1 font-poppins">
       <label className="block text-white text-lg font-semibold mb-1">
         {label}
       </label>

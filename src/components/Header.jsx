@@ -7,22 +7,20 @@ import axios from "axios";
 export default function Header() {
   const [advice, setAdvice] = useState("");
   const [adviceError, setAdviceError] = useState(null);
+
   useEffect(() => {
     axios
       .get("https://api.adviceslip.com/advice")
       .then((response) => {
-        // Menyimpan nasihat jika berhasil
         const fetchedAdvice =
           response.data.slip.advice || "No advice available.";
         setAdvice(fetchedAdvice);
       })
-      .catch((err) => {
-        // Menangani error jika gagal mengambil nasihat
+      .catch(() => {
         setAdviceError("Failed to fetch advice.");
       });
   }, []);
 
-  // Menampilkan informasi nasihat
   const adviceInfo = adviceError ? (
     <div className="bg-red-500 text-white mb-5 p-5 text-sm font-light rounded-lg shadow-md">
       {adviceError}
@@ -32,10 +30,10 @@ export default function Header() {
   );
 
   return (
-    <div className="flex justify-between items-center px-6 py-4 bg-[var(--color-header)] text-[var(--color-white)] shadow-md">
+    <div className="font-poppins flex justify-between items-center px-6 py-4 bg-[var(--color-header)] text-[var(--color-white)] shadow-md">
       <div className="flex flex-col">
         <p className="text-lg font-bold">Selamat datang di Kopiku</p>
-        <h2> {adviceInfo}</h2>
+        <h2>{adviceInfo}</h2>
       </div>
 
       <div className="relative w-full max-w-md mx-8">

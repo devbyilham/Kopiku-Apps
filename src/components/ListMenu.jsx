@@ -21,7 +21,7 @@ export default function ListMenu() {
      }`;
 
   return (
-    <div id="sidebar-menu" className="mt-20">
+    <div id="sidebar-menu" className="mt-20 font-poppins">
       <ul id="menu-list" className="space-y-6 flex flex-col items-center">
         <li>
           <NavLink id="menu-1" to="/" className={menuClass}>

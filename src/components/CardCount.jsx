@@ -4,7 +4,7 @@ import CardCountData from "../data/CardCount.json";
 
 export default function CardCount() {
   return (
-    <div className="p-6 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+    <div className="p-6 grid gap-6 sm:grid-cols-2 md:grid-cols-4 font-poppins">
       {CardCountData.map((item) => (
         <div
           key={item.id}
@@ -18,7 +18,7 @@ export default function CardCount() {
             />
           </div>
 
-          <div className="p-4 flex flex-col space-y-2 text-teks font-poppins">
+          <div className="p-4 flex flex-col space-y-2 text-teks">
             <h3 className="text-xl font-bold">{item.nama}</h3>
             <p className="text-sm text-gray-600">{item.deskripsi}</p>
 

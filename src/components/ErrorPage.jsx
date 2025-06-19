@@ -5,7 +5,7 @@ export default function ErrorPage({ code, description, image }) {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen bg-white flex items-center justify-center relative overflow-hidden">
+    <div className="h-screen bg-white flex items-center justify-center relative overflow-hidden font-poppins">
       {/* Background curves */}
       <div className="absolute top-0 left-0 w-[450px] h-[450px] bg-[#523628] rounded-br-[100%] z-0"></div>
       <div className="absolute bottom-0 right-0 w-[450px] h-[450px] bg-[#523628] rounded-tl-[100%] z-0"></div>

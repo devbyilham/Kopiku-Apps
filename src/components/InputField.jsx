@@ -1,6 +1,6 @@
 export default function InputField({ label, type, placeholder, value, onChange, onBlur, error }) {
   return (
-    <div className="mb-1">
+    <div className="mb-1 font-poppins">
       <label className="block text-white text-md font-semibold mb-1">
         {label}
       </label>
