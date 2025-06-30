@@ -1,3 +1,5 @@
+import { BiFoodMenu } from "react-icons/bi";
+import { MdArticle } from "react-icons/md";
 import { AiFillContacts } from "react-icons/ai";
 import { AiOutlineBook } from "react-icons/ai";
 import { RiTeamFill } from "react-icons/ri";
@@ -30,7 +32,12 @@ export default function ListMenu() {
         </li>
         <li>
           <NavLink id="menu-2" to="menu" className={menuClass}>
-            <VscListSelection />
+            <BiFoodMenu />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-3" to="artikel" className={menuClass}>
+            <MdArticle />
           </NavLink>
         </li>
         <li>

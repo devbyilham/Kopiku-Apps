@@ -14,8 +14,8 @@ export default function AuthLayout() {
         </div>
         <div className="flex items-center justify-center mb-6">
           <h1 className="text-4xl font-extrabold">
-            <span className="text-white">Coffee</span>
-            <span className="text-[#f08c50]">Shop</span>
+            <span className="text-white">Kopi</span>
+            <span className="text-[#f08c50]">Ku</span>
           </h1>
         </div>
 
