@@ -43,7 +43,7 @@ export default function ListMenu() {
             <CgProfile />
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink id="menu-5" to="error400" className={menuClass}>
             <BiErrorCircle />
           </NavLink>
@@ -57,7 +57,7 @@ export default function ListMenu() {
           <NavLink id="menu-7" to="error403" className={menuClass}>
             <BiMessageSquareError />
           </NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink id="menu-8" to="faq" className={menuClass}>
             <FaQuestionCircle />

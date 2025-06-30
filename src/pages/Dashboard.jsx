@@ -14,6 +14,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[var(--color-header)] text-white">
+      <div className="w-[97%] h-[1px] bg-white opacity-60 mx-auto mb-4"></div>
       <PageHeader title="Menu Kopi" categories={categories} />
       <CardCount />
     </div>
