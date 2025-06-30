@@ -67,4 +67,26 @@ export const AuthAPI = {
       };
     }
   },
+
+  updatePassword: async (accessToken, newPassword) => {
+    try {
+      const response = await axios.put(
+        `${SUPABASE_URL}/auth/v1/user`,
+        { password: newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            apikey: API_KEY,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return { data: response.data, error: null };
+    } catch (err) {
+      return {
+        data: null,
+        error: err.response?.data || { message: "Update password failed." },
+      };
+    }
+  },
 };
