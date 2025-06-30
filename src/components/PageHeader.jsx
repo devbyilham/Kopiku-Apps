@@ -19,7 +19,7 @@ export default function PageHeader({ categories, title }) {
         ))}
       </div>
 
-      <div className="px-6">
+      <div className="px-1">
         <h1 className="text-2xl text-[var(--color-white)] font-semibold">
           {title}
         </h1>

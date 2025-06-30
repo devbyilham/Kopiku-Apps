@@ -38,7 +38,7 @@ export default function Login() {
 
   return (
     <div className="bg-[#8b5e45] p-8 rounded-2xl shadow-xl text-white w-full max-w-md mx-auto border border-[#a27154] font-[Poppins]">
-      <h2 className="text-3xl font-semibold mb-6 text-center">Sign in</h2>
+      <h2 className="text-3xl font-semibold mb-6 text-center">Login</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
@@ -85,7 +85,7 @@ export default function Login() {
 
         <button
           type="submit"
-          className="w-full bg-[#f08c50] hover:bg-[#d9773a] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 mt-4"
+          className="w-full bg-[var(--color-primary)] hover:bg-[#d9773a] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 mt-4"
         >
           Login
         </button>

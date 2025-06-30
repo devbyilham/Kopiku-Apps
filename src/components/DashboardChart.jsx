@@ -30,9 +30,9 @@ export default function DashboardChart() {
   ];
 
   return (
-<div className="max-w-screen-xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="px-1 md:px-1 grid grid-cols-1 md:grid-cols-2 gap-6 p-1">
       {/* Chart Login */}
-      <div className="card bg-[var(--color-accent)] text-white shadow-md">
+      <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl ">
         <div className="card-body">
           <h2 className="card-title">Login Pengguna</h2>
           <ResponsiveContainer width="100%" height={200}>
@@ -53,7 +53,7 @@ export default function DashboardChart() {
       </div>
 
       {/* Chart Artikel Populer */}
-      <div className="card bg-[var(--color-accent)] text-white shadow-md">
+      <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl">
         <div className="card-body">
           <h2 className="card-title">Artikel Populer</h2>
           <ResponsiveContainer width="100%" height={200}>

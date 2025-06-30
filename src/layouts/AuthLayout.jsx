@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 
 export default function AuthLayout() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#523628] font-[Poppins]">
-      <div className="bg-[#754e3d] p-8 rounded-2xl shadow-lg w-full max-w-lg text-white">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-header)]  font-[Poppins]">
+      <div className="bg-[var(--color-border)] p-8 rounded-2xl shadow-lg w-full max-w-lg text-white">
         {/* Icon Kopi */}
         <div className="flex justify-center mb-0">
           <img
@@ -15,7 +15,7 @@ export default function AuthLayout() {
         <div className="flex items-center justify-center mb-6">
           <h1 className="text-4xl font-extrabold">
             <span className="text-white">Kopi</span>
-            <span className="text-[#f08c50]">Ku</span>
+            <span className="text-[var(--color-primary)] ">Ku</span>
           </h1>
         </div>
 

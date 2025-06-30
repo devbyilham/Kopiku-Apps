@@ -7,7 +7,7 @@ export default function Sidebar() {
   return (
     <div
       id="sidebar"
-      className="flex min-h-screen w-20 flex-col bg-[var(--color-accent)]  p-6 shadow-lg text-white font-poppins"
+      className="flex min-h-screen w-20 flex-col bg-[var(--color-border)]  p-6 shadow-lg text-white font-poppins"
     >
       <div id="sidebar-logo" className="flex flex-col items-center">
         <span id="logo" className="text-[48px] drop-shadow-md">
