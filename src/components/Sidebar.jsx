@@ -2,6 +2,7 @@ import { GiCoffeeCup } from "react-icons/gi";
 import { PiCoffeeBold } from "react-icons/pi";
 import { FiLogOut } from "react-icons/fi";
 import ListMenu from "./ListMenu";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -18,9 +19,9 @@ export default function Sidebar() {
       <ListMenu />
 
       <div id="sidebar-footer" className="mt-auto flex justify-center pt-10">
-        <div className="text-[35px] hover:text-yellow-300 transition">
+        <Link to="/" className="text-[35px] hover:text-yellow-300 transition">
           <FiLogOut />
-        </div>
+        </Link>
       </div>
     </div>
   );

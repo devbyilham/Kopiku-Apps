@@ -79,6 +79,7 @@ export default function Header() {
           </button>
         </Link>
       </div>
+      <div className="w-[100%] h-[1px] bg-white opacity-60 rounded-full mx-auto mt-3" />
     </div>
   );
 }

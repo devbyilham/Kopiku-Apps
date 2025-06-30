@@ -30,7 +30,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[var(--color-header)] text-white px-6 py-4 space-y-6">
-      <div className="w-[100%] h-[1px] bg-white opacity-60 rounded-full mx-auto mb-6" />
       <PageHeader title="Menu Kopi" categories={categories} />
       {/* Daftar Menu */}
       <CardCount />
