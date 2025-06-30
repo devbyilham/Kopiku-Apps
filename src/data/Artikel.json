@@ -5,5 +5,34 @@
     "isi": "Berikut adalah beberapa tips untuk membuat kopi nikmat di rumah...",
     "penulis": "Admin",
     "tanggal": "2025-06-30"
+  },
+
+  {
+    "id": "2",
+    "judul": "Manfaat Minum Kopi di Pagi Hari",
+    "isi": "Minum kopi di pagi hari dapat membantu meningkatkan fokus dan energi sebelum memulai aktivitas...",
+    "penulis": "Admin",
+    "tanggal": "2025-06-29"
+  },
+  {
+    "id": "3",
+    "judul": "Cara Menyeduh Kopi dengan French Press",
+    "isi": "French Press adalah salah satu metode seduh yang mudah dan menghasilkan rasa kopi yang kuat. Berikut langkah-langkahnya...",
+    "penulis": "Barista Kopiku",
+    "tanggal": "2025-06-28"
+  },
+  {
+    "id": "4",
+    "judul": "Perbedaan Arabika dan Robusta",
+    "isi": "Banyak orang belum tahu perbedaan antara kopi Arabika dan Robusta. Keduanya memiliki cita rasa dan karakteristik yang berbeda...",
+    "penulis": "Dewi R.",
+    "tanggal": "2025-06-27"
+  },
+  {
+    "id": "5",
+    "judul": "Rekomendasi Kopi Lokal Nusantara",
+    "isi": "Indonesia memiliki banyak kopi lokal yang berkualitas. Mulai dari Gayo, Toraja, hingga Java Ijen. Yuk, eksplor cita rasanya...",
+    "penulis": "Tim Redaksi Kopiku",
+    "tanggal": "2025-06-26"
   }
 ]

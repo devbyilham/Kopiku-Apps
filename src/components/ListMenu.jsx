@@ -41,15 +41,20 @@ export default function ListMenu() {
           </NavLink>
         </li>
         <li>
+          <NavLink id="menu-4" to="faq" className={menuClass}>
+            <FaQuestionCircle />
+          </NavLink>
+        </li>
+        <li>
           <NavLink id="menu-3" to="loker" className={menuClass}>
             <BiSearchAlt2 />
           </NavLink>
         </li>
-        <li>
-          <NavLink id="menu-4" to="profil" className={menuClass}>
+        {/* <li>
+          <NavLink id="menu-5" to="profil" className={menuClass}>
             <CgProfile />
           </NavLink>
-        </li>
+        </li> */}
         {/* <li>
           <NavLink id="menu-5" to="error400" className={menuClass}>
             <BiErrorCircle />
@@ -65,11 +70,6 @@ export default function ListMenu() {
             <BiMessageSquareError />
           </NavLink>
         </li> */}
-        <li>
-          <NavLink id="menu-8" to="faq" className={menuClass}>
-            <FaQuestionCircle />
-          </NavLink>
-        </li>
         <li>
           <NavLink id="menu-9" to="team" className={menuClass}>
             <RiTeamFill />

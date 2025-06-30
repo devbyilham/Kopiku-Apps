@@ -59,11 +59,11 @@ export default function Faq() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-      <div className="w-full max-w-5xl space-y-6">
-        <h1 className="text-4xl font-bold text-center mb-8 drop-shadow-md">
-          📚 Daftar FAQ
-        </h1>
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins p-6 pb-16">
+      <h1 className="text-3xl font-bold text-center drop-shadow-md mb-6">
+        Daftar FAQ
+      </h1>
+      <div className="w-full max-w-5xl space-y-6 ">
         {error && <AlertBox type="error">{error}</AlertBox>}
         {success && (
           <div className="bg-green-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
