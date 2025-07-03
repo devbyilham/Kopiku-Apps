@@ -8,5 +8,20 @@
     "id": 2,
     "pertanyaan": "Bagaimana cara menyimpan kopi?",
     "jawaban": "Kopi sebaiknya disimpan dalam wadah kedap udara di tempat yang sejuk dan gelap."
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Apa perbedaan kopi Arabika dan Robusta?",
+    "jawaban": "Arabika memiliki rasa yang lebih halus dan asam, sedangkan Robusta lebih pahit dan berkafein tinggi."
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Berapa lama kopi bisa disimpan?",
+    "jawaban": "Biji kopi sangrai bisa disimpan hingga 2 bulan dalam wadah kedap udara, sedangkan bubuk kopi sekitar 2 minggu."
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Apa itu single origin?",
+    "jawaban": "Single origin adalah kopi yang berasal dari satu wilayah atau perkebunan tertentu dengan cita rasa khas."
   }
 ]
