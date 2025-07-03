@@ -46,6 +46,11 @@ export default function ListMenu() {
           </NavLink>
         </li>
         <li>
+          <NavLink id="menu-5" to="team" className={menuClass}>
+            <RiTeamFill />
+          </NavLink>
+        </li>
+        <li>
           <NavLink id="menu-3" to="loker" className={menuClass}>
             <BiSearchAlt2 />
           </NavLink>
@@ -70,11 +75,6 @@ export default function ListMenu() {
             <BiMessageSquareError />
           </NavLink>
         </li> */}
-        <li>
-          <NavLink id="menu-9" to="team" className={menuClass}>
-            <RiTeamFill />
-          </NavLink>
-        </li>
         <li>
           <NavLink id="menu-10" to="booking" className={menuClass}>
             <AiOutlineBook />

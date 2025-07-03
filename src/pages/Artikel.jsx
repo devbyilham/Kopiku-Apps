@@ -1,35 +1,45 @@
-import { useState } from "react";
-import ArtikelData from "../data/Artikel.json";
-import { v4 as uuidv4 } from "uuid";
+import { useState, useEffect } from "react";
+import { ArtikelAPI } from "../services/ArtikelAPI";
 
 export default function Artikel() {
-  const [artikelList, setArtikelList] = useState(ArtikelData);
-  const [form, setForm] = useState({ id: "", judul: "", isi: "" });
+  const [artikelList, setArtikelList] = useState([]);
+  const [form, setForm] = useState({ id: "", judul: "", isi: "", penulis: "" });
   const [editMode, setEditMode] = useState(false);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetchArtikel();
+  }, []);
+
+  const fetchArtikel = async () => {
+    const data = await ArtikelAPI.fetchArtikel();
+    setArtikelList(data);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = () => {
-    if (!form.judul || !form.isi) return;
+  const handleSubmit = async () => {
+    if (!form.judul || !form.isi || !form.penulis) return;
 
     if (editMode) {
-      setArtikelList(
-        artikelList.map((a) => (a.id === form.id ? { ...form } : a))
-      );
+      await ArtikelAPI.updateArtikel(form.id, {
+        judul: form.judul,
+        isi: form.isi,
+        penulis: form.penulis,
+      });
     } else {
-      const newArtikel = {
-        ...form,
-        id: uuidv4(),
-        tanggal: new Date().toISOString().slice(0, 10),
-      };
-      setArtikelList([...artikelList, newArtikel]);
+      await ArtikelAPI.createArtikel({
+        judul: form.judul,
+        isi: form.isi,
+        penulis: form.penulis,
+      });
     }
 
-    setForm({ id: "", judul: "", isi: "" });
+    fetchArtikel();
+    setForm({ id: "", judul: "", isi: "", penulis: "" });
     setEditMode(false);
   };
 
@@ -38,8 +48,9 @@ export default function Artikel() {
     setEditMode(true);
   };
 
-  const handleDelete = (id) => {
-    setArtikelList(artikelList.filter((a) => a.id !== id));
+  const handleDelete = async (id) => {
+    await ArtikelAPI.deleteArtikel(id);
+    fetchArtikel();
   };
 
   const filtered = artikelList.filter((a) =>
@@ -72,8 +83,19 @@ export default function Artikel() {
                 name="judul"
                 value={form.judul}
                 onChange={handleChange}
-                className="p-2 rounded text-black bg-white focus:outline-none"
+                className="p-2 rounded text-black bg-white"
                 placeholder="Judul Artikel"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1 text-sm font-medium">Penulis</label>
+              <input
+                type="text"
+                name="penulis"
+                value={form.penulis}
+                onChange={handleChange}
+                className="p-2 rounded text-black bg-white"
+                placeholder="Nama Penulis"
               />
             </div>
             <div className="flex flex-col md:col-span-2">
@@ -83,7 +105,7 @@ export default function Artikel() {
                 rows="4"
                 value={form.isi}
                 onChange={handleChange}
-                className="p-2 rounded text-black bg-white focus:outline-none"
+                className="p-2 rounded text-black bg-white"
                 placeholder="Isi Artikel"
               ></textarea>
             </div>
@@ -103,7 +125,7 @@ export default function Artikel() {
               <button
                 onClick={() => {
                   setEditMode(false);
-                  setForm({ id: "", judul: "", isi: "" });
+                  setForm({ id: "", judul: "", isi: "", penulis: "" });
                 }}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
@@ -126,33 +148,33 @@ export default function Artikel() {
 
         {/* Tabel Artikel */}
         <div className="overflow-x-auto">
-          <div className="min-w-[600px]">
-            <div className="grid grid-cols-5 gap-2 bg-[#8b5e45] px-4 py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
+          <div className="min-w-[700px]">
+            <div className="grid grid-cols-5 gap-2 bg-[#8b5e45] py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
               <div>No</div>
               <div>Judul</div>
+              <div>Penulis</div>
               <div>Isi</div>
-              <div>Tanggal</div>
               <div>Aksi</div>
             </div>
             {filtered.map((artikel, index) => (
               <div
                 key={artikel.id}
-                className="grid grid-cols-5 items-center px-4 py-3 gap-2 bg-[var(--color-border)] transition text-sm text-center"
+                className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
               >
-                <div className="font-bold">{index + 1}</div>
-                <div className="font-semibold">{artikel.judul}</div>
-                <div className="text-xs text-justify">{artikel.isi}</div>
-                <div className="text-xs">{artikel.tanggal}</div>
-                <div className="flex flex-col gap-1">
+                <div>{index + 1}</div>
+                <div>{artikel.judul}</div>
+                <div>{artikel.penulis}</div>
+                <div className="text-justify">{artikel.isi}</div>
+                <div className="flex flex-row justify-center gap-5">
                   <button
                     onClick={() => handleEdit(artikel)}
-                    className="px-2 py-1 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
+                    className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(artikel.id)}
-                    className="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+                    className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
                   >
                     Hapus
                   </button>

@@ -2,8 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Save } from "lucide-react";
 import { FaqAPI } from "../services/FaqAPI";
-import AlertBox from "../components/AlertBox"; // Import komponen reusable
-import LoadingSpinner from "../components/LoadingSpinner"; // Import komponen reusable
+import AlertBox from "../components/AlertBox";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function FaqForm() {
   const { id } = useParams();
@@ -13,14 +13,13 @@ export default function FaqForm() {
   const [form, setForm] = useState({ pertanyaan: "", jawaban: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     if (isEdit) {
       const parsedId = parseInt(id);
-
       if (isNaN(parsedId)) {
         setError("ID FAQ tidak valid. Mengarahkan kembali ke daftar FAQ.");
-        console.error("Invalid FAQ ID detected:", id);
         navigate("/faq");
         return;
       }
@@ -41,7 +40,6 @@ export default function FaqForm() {
           }
         } catch (err) {
           setError("Gagal memuat data FAQ: " + err.message);
-          console.error("Error fetching FAQ for edit:", err);
         } finally {
           setLoading(false);
         }
@@ -54,6 +52,13 @@ export default function FaqForm() {
       setError(null);
     }
   }, [id, isEdit, navigate]);
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,16 +79,15 @@ export default function FaqForm() {
           return;
         }
         await FaqAPI.updateFaq(parsedId, form);
-        alert("FAQ berhasil diperbarui!");
+        setToast({ type: "success", message: "FAQ berhasil diperbarui!" });
       } else {
         await FaqAPI.createFaq(form);
-        alert("FAQ berhasil ditambahkan!");
+        setToast({ type: "success", message: "FAQ berhasil ditambahkan!" });
       }
-      navigate("/faq");
+      setTimeout(() => navigate("/faq"), 1000);
     } catch (err) {
+      setToast({ type: "error", message: "Gagal menyimpan FAQ." });
       setError("Gagal menyimpan FAQ: " + err.message);
-      console.error("Error saving FAQ:", err);
-      alert("Gagal menyimpan FAQ.");
     } finally {
       setLoading(false);
     }
@@ -99,7 +103,7 @@ export default function FaqForm() {
 
   if (error && isEdit) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#523628] text-white">
+      <div className="flex flex-col justify-center items-center min-h-screen bg-[#523628] text-white px-4">
         <AlertBox type="error">{error}</AlertBox>
         <button
           onClick={() => navigate("/faq")}
@@ -113,6 +117,13 @@ export default function FaqForm() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
+      {/* Toast Alert */}
+      {toast && (
+        <div className="fixed top-5 right-5 z-50 animate-fade-in">
+          <AlertBox type={toast.type}>{toast.message}</AlertBox>
+        </div>
+      )}
+
       <div className="w-full max-w-xl space-y-6">
         <h1 className="text-3xl font-bold text-center drop-shadow-md">
           {isEdit ? "✏️ Edit FAQ" : "➕ Tambah FAQ"}

@@ -10,44 +10,43 @@ export default function Faq() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const [faqList, setFaqList] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    loadFaqs();
+    loadFaq();
   }, []);
 
-  const loadFaqs = async () => {
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  const loadFaq = async () => {
     try {
       setLoading(true);
       setError("");
-      const data = await FaqAPI.fetchFaqs();
+      const data = await FaqAPI.fetchFaq();
       setFaqList(data);
     } catch (err) {
       setError("Gagal memuat data FAQ");
-      console.error("Error loading FAQs:", err);
+      console.error("Error loading FAQ:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    const konfirmasi = confirm("Yakin ingin menghapus FAQ ini?");
-    if (!konfirmasi) return;
-
     try {
       setLoading(true);
       setError("");
-      setSuccess("");
-
       await FaqAPI.deleteFaq(id);
       setSuccess("FAQ berhasil dihapus!");
-
-      setTimeout(() => setSuccess(""), 3000);
-      loadFaqs();
+      loadFaq();
     } catch (err) {
-      setError(`Terjadi kesalahan: ${err.message}`);
+      setError("Gagal menghapus FAQ");
       console.error("Error deleting FAQ:", err);
     } finally {
       setLoading(false);
@@ -63,13 +62,16 @@ export default function Faq() {
       <h1 className="text-3xl font-bold text-center drop-shadow-md mb-6">
         Daftar FAQ
       </h1>
-      <div className="w-full max-w-5xl space-y-6 ">
-        {error && <AlertBox type="error">{error}</AlertBox>}
+      <div className="w-full max-w-5xl space-y-6 relative">
+        {/* Alert Sukses */}
         {success && (
-          <div className="bg-green-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
-            {success}
+          <div className="fixed top-5 right-5 z-50 animate-fade-in">
+            <AlertBox type="success">{success}</AlertBox>
           </div>
         )}
+
+        {error && <AlertBox type="error">{error}</AlertBox>}
+
         <Link
           to="/faq/add"
           className="flex items-center justify-center gap-2 bg-[#8b5e3c] hover:bg-[#a06c47] w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 shadow-md"
@@ -107,28 +109,16 @@ export default function Faq() {
               <table className="min-w-full divide-y divide-white/20">
                 <thead className="bg-[#523628]">
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
-                      #
+                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      No
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                       Pertanyaan
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                       Jawaban
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                       Aksi
                     </th>
                   </tr>
@@ -162,13 +152,9 @@ export default function Faq() {
                         </Link>
                         <button
                           onClick={() => handleDelete(faq.id)}
-                          disabled={loading}
                           title="Hapus FAQ"
                         >
-                          <Trash2
-                            size={20}
-                            className="text-red-400 hover:text-red-500 transition-colors"
-                          />
+                          <Trash2 className="text-red-400 hover:text-red-500 transition-colors" />
                         </button>
                       </td>
                     </tr>

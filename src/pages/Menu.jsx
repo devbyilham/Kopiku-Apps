@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import KopiData from "../data/Kopi.json";
+import React, { useEffect, useState } from "react";
+import { ProdukAPI } from "../services/ProdukAPI";
 
 export default function Menu() {
-  const [kopiList, setKopiList] = useState([]);
+  const [produkList, setProdukList] = useState([]);
   const [dataForm, setDataForm] = useState({
     searchTerm: "",
     selectedRating: "",
@@ -18,126 +18,90 @@ export default function Menu() {
     takaran: "",
     gambar: "",
   });
-
+  const [formEdit, setFormEdit] = useState({ ...formAdd });
   const [editId, setEditId] = useState(null);
-  const [formEdit, setFormEdit] = useState({
-    nama: "",
-    deskripsi: "",
-    rating: "",
-    harga: "",
-    asal: "",
-    kafein: "",
-    takaran: "",
-    gambar: "",
-  });
+
+  const getProduk = async () => {
+    try {
+      const data = await ProdukAPI.fetchProduk();
+      setProdukList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const stored = localStorage.getItem("kopiList");
-    if (stored) setKopiList(JSON.parse(stored));
-    else setKopiList(KopiData);
+    getProduk();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("kopiList", JSON.stringify(kopiList));
-  }, [kopiList]);
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setDataForm({
-      ...dataForm,
-      [name]: value,
-    });
+  const handleAdd = async () => {
+    try {
+      await ProdukAPI.createProduk(formAdd);
+      getProduk();
+      setFormAdd({
+        nama: "",
+        deskripsi: "",
+        rating: "",
+        harga: "",
+        asal: "",
+        kafein: "",
+        takaran: "",
+        gambar: "",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const _searchTerm = dataForm.searchTerm.toLowerCase();
-
-  const filteredKopi = kopiList.filter((kopi) => {
-    const matchesSearch = kopi.nama.toLowerCase().includes(_searchTerm);
-    const matchesRating = dataForm.selectedRating
-      ? kopi.rating.toString() === dataForm.selectedRating
-      : true;
-    const matchesAsal = dataForm.selectedAsal
-      ? kopi.detail.asal.includes(dataForm.selectedAsal)
-      : true;
-    return matchesSearch && matchesRating && matchesAsal;
-  });
-
-  const allRating = [...new Set(kopiList.map((k) => k.rating))].sort(
-    (a, b) => a - b
-  );
-  const allAsal = [...new Set(kopiList.map((k) => k.detail.asal))].sort();
-
-  const handleAdd = () => {
-    const newItem = {
-      id: Date.now(),
-      nama: formAdd.nama,
-      deskripsi: formAdd.deskripsi,
-      rating: parseFloat(formAdd.rating),
-      harga: formAdd.harga,
-      gambar: formAdd.gambar,
-      detail: {
-        asal: formAdd.asal,
-        kafein: formAdd.kafein,
-        takaran: formAdd.takaran,
-      },
-    };
-    setKopiList([...kopiList, newItem]);
-    setFormAdd({
-      nama: "",
-      deskripsi: "",
-      rating: "",
-      harga: "",
-      asal: "",
-      kafein: "",
-      takaran: "",
-      gambar: "",
-    });
+  const handleEdit = async (id) => {
+    try {
+      const item = await ProdukAPI.getProdukById(id);
+      setFormEdit(item);
+      setEditId(id);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleDelete = (id) => {
-    setKopiList(kopiList.filter((kopi) => kopi.id !== id));
+  const handleUpdate = async () => {
+    try {
+      await ProdukAPI.updateProduk(editId, formEdit);
+      getProduk();
+      setEditId(null);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleEdit = (id) => {
-    const kopiToEdit = kopiList.find((kopi) => kopi.id === id);
-    setEditId(id);
-    setFormEdit({
-      nama: kopiToEdit.nama,
-      deskripsi: kopiToEdit.deskripsi,
-      rating: kopiToEdit.rating,
-      harga: kopiToEdit.harga,
-      asal: kopiToEdit.detail.asal,
-      kafein: kopiToEdit.detail.kafein,
-      takaran: kopiToEdit.detail.takaran,
-      gambar: kopiToEdit.gambar,
-    });
-  };
-
-  const handleUpdate = () => {
-    const updatedList = kopiList.map((kopi) =>
-      kopi.id === editId
-        ? {
-            ...kopi,
-            nama: formEdit.nama,
-            deskripsi: formEdit.deskripsi,
-            rating: parseFloat(formEdit.rating),
-            harga: formEdit.harga,
-            gambar: formEdit.gambar,
-            detail: {
-              asal: formEdit.asal,
-              kafein: formEdit.kafein,
-              takaran: formEdit.takaran,
-            },
-          }
-        : kopi
-    );
-    setKopiList(updatedList);
-    setEditId(null);
+  const handleDelete = async (id) => {
+    try {
+      await ProdukAPI.deleteProduk(id);
+      getProduk();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const cancelEdit = () => {
     setEditId(null);
   };
+
+  const handleChange = (e) => {
+    setDataForm({ ...dataForm, [e.target.name]: e.target.value });
+  };
+
+  const filteredProduk = produkList.filter((item) => {
+    return (
+      item.nama.toLowerCase().includes(dataForm.searchTerm.toLowerCase()) &&
+      (dataForm.selectedRating
+        ? item.rating === parseInt(dataForm.selectedRating)
+        : true) &&
+      (dataForm.selectedAsal ? item.asal === dataForm.selectedAsal : true)
+    );
+  });
+
+  const allRating = [...new Set(produkList.map((item) => item.rating))];
+  const allAsal = [...new Set(produkList.map((item) => item.asal))];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
@@ -153,35 +117,26 @@ export default function Menu() {
               ➕ Tambah Menu Kopi
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--color-border)] p-6 text-white">
-            {[
-              { label: "Nama Kopi", name: "nama" },
-              { label: "Deskripsi", name: "deskripsi" },
-              { label: "Rating", name: "rating", type: "number" },
-              { label: "Harga", name: "harga" },
-              { label: "Asal", name: "asal" },
-              { label: "Kafein", name: "kafein" },
-              { label: "Takaran", name: "takaran" },
-              { label: "URL Gambar", name: "gambar" },
-            ].map((field) => (
-              <div key={field.name} className="flex flex-col">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#6c4432] p-6 text-white">
+            {Object.keys(formAdd).map((field) => (
+              <div key={field} className="flex flex-col">
                 <label className="mb-1 text-sm font-medium">
-                  {field.label}
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
                 </label>
                 <input
-                  type={field.type || "text"}
-                  name={field.name}
-                  value={formAdd[field.name]}
+                  type={field === "rating" ? "number" : "text"}
+                  name={field}
+                  value={formAdd[field]}
                   onChange={(e) =>
-                    setFormAdd({ ...formAdd, [field.name]: e.target.value })
+                    setFormAdd({ ...formAdd, [field]: e.target.value })
                   }
                   className="p-2 rounded text-black bg-white focus:outline-none"
-                  placeholder={field.label}
+                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                 />
               </div>
             ))}
           </div>
-          <div className="flex justify-end bg-[var(--color-border)] px-6 py-4 border-t border-white/20">
+          <div className="flex justify-end bg-[#6c4432] px-6 py-4 border-t border-white/20">
             <button
               onClick={handleAdd}
               className="px-6 py-2 bg-green-500 hover:bg-green-600 rounded text-white font-semibold"
@@ -199,35 +154,26 @@ export default function Menu() {
                 ✏️ Edit Menu Kopi
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--color-border)] p-6 text-white">
-              {[
-                { label: "Nama Kopi", name: "nama" },
-                { label: "Deskripsi", name: "deskripsi" },
-                { label: "Rating", name: "rating", type: "number" },
-                { label: "Harga", name: "harga" },
-                { label: "Asal", name: "asal" },
-                { label: "Kafein", name: "kafein" },
-                { label: "Takaran", name: "takaran" },
-                { label: "URL Gambar", name: "gambar" },
-              ].map((field) => (
-                <div key={field.name} className="flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#6c4432] p-6 text-white">
+              {Object.keys(formEdit).map((field) => (
+                <div key={field} className="flex flex-col">
                   <label className="mb-1 text-sm font-medium">
-                    {field.label}
+                    {field.charAt(0).toUpperCase() + field.slice(1)}
                   </label>
                   <input
-                    type={field.type || "text"}
-                    name={field.name}
-                    value={formEdit[field.name]}
+                    type={field === "rating" ? "number" : "text"}
+                    name={field}
+                    value={formEdit[field]}
                     onChange={(e) =>
-                      setFormEdit({ ...formEdit, [field.name]: e.target.value })
+                      setFormEdit({ ...formEdit, [field]: e.target.value })
                     }
                     className="p-2 rounded text-black bg-white focus:outline-none"
-                    placeholder={field.label}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                   />
                 </div>
               ))}
             </div>
-            <div className="flex justify-end gap-3 bg-[var(--color-border)] px-6 py-4 border-t border-white/20">
+            <div className="flex justify-end gap-3 bg-[#6c4432] px-6 py-4 border-t border-white/20">
               <button
                 onClick={handleUpdate}
                 className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 rounded text-white font-semibold"
@@ -250,7 +196,7 @@ export default function Menu() {
             type="text"
             name="searchTerm"
             placeholder="🔍 Cari kopi..."
-            className="p-2 border bg-[var(--color-border)] rounded text-white"
+            className="p-2 border bg-[#6c4432] rounded text-white"
             onChange={handleChange}
             value={dataForm.searchTerm}
           />
@@ -282,60 +228,50 @@ export default function Menu() {
           </select>
         </div>
 
-        {/* Tabel */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[900px]">
-            <div className="grid grid-cols-10 gap-2 bg-[#8b5e45] px-4 py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
-              <div>No</div>
-              <div>Gambar</div>
-              <div>Nama</div>
-              <div>Deskripsi</div>
-              <div>Rating</div>
-              <div>Harga</div>
-              <div>Asal</div>
-              <div>Kafein</div>
-              <div>Takaran</div>
-              <div>Aksi</div>
-            </div>
-            {filteredKopi.map((item, index) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-10 items-center px-4 py-3 gap-2 bg-[var(--color-border)] transition text-sm text-center"
-              >
-                <div className="font-bold">{index + 1}</div>
-                <div className="flex justify-center">
-                  <img
-                    src={item.gambar}
-                    alt={item.nama}
-                    className="w-20 h-20 object-cover rounded"
-                  />
+        {/* Daftar Produk */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProduk.map((item) => (
+            <div
+              key={item.id}
+              className="bg-[#6c4432] rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02]"
+            >
+              <img
+                src={item.gambar}
+                alt={item.nama}
+                className="w-full h-44 object-cover"
+              />
+              <div className="p-4 space-y-2">
+                <h3 className="text-xl font-semibold">{item.nama}</h3>
+                <p className="text-sm italic text-white/80">{item.deskripsi}</p>
+                <div className="text-sm space-y-1">
+                  <p>
+                    Harga:{" "}
+                    <span className="font-bold text-[#f08c50]">
+                      Rp {item.harga}
+                    </span>
+                  </p>
+                  <p>Rating: ⭐ {item.rating}/5</p>
+                  <p>Asal: {item.asal}</p>
+                  <p>Kafein: {item.kafein}</p>
+                  <p>Takaran: {item.takaran}</p>
                 </div>
-                <div className="font-semibold">{item.nama}</div>
-                <div className="text-xs text-gray-200 text-justify">
-                  {item.deskripsi}
-                </div>
-                <div className="text-yellow-300">⭐ {item.rating}</div>
-                <div className="font-bold">Rp {item.harga}</div>
-                <div className="text-xs">{item.detail.asal}</div>
-                <div className="text-xs">{item.detail.kafein}</div>
-                <div className="text-xs">{item.detail.takaran}</div>
-                <div className="flex flex-col gap-1">
+                <div className="flex gap-2 pt-3">
                   <button
                     onClick={() => handleEdit(item.id)}
-                    className="px-2 py-1 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
+                    className="flex-1 bg-yellow-500 hover:bg-yellow-600 py-1 rounded text-sm font-medium"
                   >
-                    Edit
+                    ✏️ Edit
                   </button>
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+                    className="flex-1 bg-red-600 hover:bg-red-700 py-1 rounded text-sm font-medium"
                   >
-                    Hapus
+                    🗑️ Hapus
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

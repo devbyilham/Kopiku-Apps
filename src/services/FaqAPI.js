@@ -11,7 +11,7 @@ const headers = {
 };
 
 export const FaqAPI = {
-  async fetchFaqs() {
+  async fetchFaq() {
     const response = await axios.get(API_URL, { headers });
     return response.data;
   },
