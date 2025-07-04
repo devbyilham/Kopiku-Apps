@@ -1,3 +1,4 @@
+import { MdRateReview } from "react-icons/md";
 import { BiFoodMenu } from "react-icons/bi";
 import { MdArticle } from "react-icons/md";
 import { AiFillContacts } from "react-icons/ai";
@@ -51,8 +52,13 @@ export default function ListMenu() {
           </NavLink>
         </li>
         <li>
-          <NavLink id="menu-3" to="loker" className={menuClass}>
+          <NavLink id="menu-6" to="loker" className={menuClass}>
             <BiSearchAlt2 />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-7" to="testimoni" className={menuClass}>
+            <MdRateReview />
           </NavLink>
         </li>
         {/* <li>

@@ -1,135 +1,247 @@
-import InputField from "../components/InputField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Gaji from "../components/Gaji";
+import { LokerAPI } from "../services/LokerAPI";
 
-export default function FormLowonganPekerjaan() {
-  const [selectedPosition, setSelectedPosition] = useState("");
-  const [gaji, setGaji] = useState("");
-  const [nama, setNama] = useState("");
-  const [email, setEmail] = useState("");
+export default function ManajemenLowongan() {
+  const [form, setForm] = useState({
+    nama: "",
+    email: "",
+    posisi: "",
+    gaji: "",
+  });
   const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
+  const [lowongans, setLowongans] = useState([]);
+  const [editingId, setEditingId] = useState(null);
 
-  const validate = () => {
-    let newErrors = {};
+  useEffect(() => {
+    loadData();
+  }, []);
 
-    if (!nama.trim()) {
-      newErrors.nama = "Nama wajib diisi";
-    } else if (/\d/.test(nama)) {
-      newErrors.nama = "Nama tidak boleh mengandung angka";
-    }
-
-    if (!email.trim()) {
-      newErrors.email = "Email wajib diisi";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Format email tidak valid";
-    }
-
-    if (!selectedPosition) {
-      newErrors.selectedPosition = "Posisi harus dipilih";
-    }
-
-    setErrors(newErrors);
-    setIsValid(Object.keys(newErrors).length === 0);
+  const loadData = async () => {
+    const data = await LokerAPI.fetchLoker();
+    setLowongans(data || []);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    validate();
-    if (isValid) {
-      alert("Form berhasil dikirim!");
+  const validate = () => {
+    const newErrors = {};
+    if (!form.nama.trim()) newErrors.nama = "Nama tidak boleh kosong";
+    if (!form.email.trim()) {
+      newErrors.email = "Email tidak boleh kosong";
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = "Format email tidak valid";
     }
+    if (!form.posisi.trim()) newErrors.posisi = "Posisi tidak boleh kosong";
+    if (!form.gaji || form.gaji <= 0)
+      newErrors.gaji = "Gaji harus lebih dari 0";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const resetForm = () => {
+    setForm({ nama: "", email: "", posisi: "", gaji: "" });
+    setEditingId(null);
+    setErrors({});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    if (editingId !== null) {
+      await LokerAPI.updateLoker(editingId, form);
+    } else {
+      await LokerAPI.createLoker(form);
+    }
+
+    await loadData();
+    resetForm();
+  };
+
+  const handleEdit = (lowongan) => {
+    setEditingId(lowongan.id);
+    setForm({
+      nama: lowongan.nama,
+      email: lowongan.email,
+      posisi: lowongan.posisi,
+      gaji: lowongan.gaji,
+    });
+  };
+
+  const handleDelete = async (id) => {
+    await LokerAPI.deleteLoker(id);
+    await loadData();
+    if (editingId === id) resetForm();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="bg-[#754e3d] p-2 rounded-lg shadow-md w-full max-w-2xl transition-transform transform hover:scale-103 hover:shadow-lg flex flex-col md:flex-row items-center gap-4">
-        <div className="w-full md:w-1/2 p-2">
-          <h1 className="text-2xl font-bold text-center mb-4 text-white tracking-wide drop-shadow-md">
-            Lowongan <br /> Pekerjaan
-          </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
+      <div className="w-full max-w-6xl p-6">
+        <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
+          Manajemen Lowongan
+        </h1>
 
-          <InputField
-            label="Nama"
-            type="text"
-            placeholder="Masukkan Nama"
-            value={nama}
-            onChange={(e) => setNama(e.target.value)}
-            onBlur={validate}
-            error={errors.nama}
-          />
-
-          <InputField
-            label="Email"
-            type="email"
-            placeholder="Masukkan Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={validate}
-            error={errors.email}
-          />
-
-          {/* Pilihan Posisi */}
-          <div className="mb-1">
-            <label className="block text-white text-md font-semibold mb-1">
-              Posisi
-            </label>
-            <select
-              className="w-full p-1 border border-gray-400 rounded-md bg-white text-gray-800"
-              value={selectedPosition}
-              onChange={(e) => setSelectedPosition(e.target.value)}
-              onBlur={validate}
-            >
-              <option value="">Pilih Posisi</option>
-              <option value="Barista">Barista</option>
-              <option value="Kasir">Kasir</option>
-              <option value="Waiter/Waitress">Waiter/Waitress</option>
-              <option value="Chef">Chef</option>
-            </select>
-            {errors.selectedPosition && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.selectedPosition}
-              </p>
-            )}
+        {/* Form Tambah/Edit */}
+        <div className="mb-10 rounded-lg shadow-md overflow-hidden">
+          <div
+            className={`px-6 py-4 ${
+              editingId !== null ? "bg-yellow-700" : "bg-[#8b5e45]"
+            }`}
+          >
+            <h2 className="text-xl font-bold text-white">
+              {editingId !== null ? "✏️ Edit Lowongan" : "➕ Tambah Lowongan"}
+            </h2>
           </div>
-
-          {/* Input Gaji */}
-          <Gaji
-            label="Gaji"
-            type="number"
-            placeholder="Jumlah Gaji Yang Diinginkan"
-            onChange={(e) => setGaji(Number(e.target.value))}
-          />
-
-          {/* Notifikasi Gaji */}
-          {gaji <= 2000000 ? (
-            <div className="mt-2 p-1 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
-              <p className="font-semibold">Gaji Pas</p>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#6c4432] p-6 text-white">
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm font-medium">Nama</label>
+                <input
+                  type="text"
+                  name="nama"
+                  value={form.nama}
+                  onChange={handleChange}
+                  className="p-2 rounded text-black bg-white"
+                  placeholder="Nama Pelamar"
+                />
+                {errors.nama && (
+                  <p className="text-red-400 text-sm mt-1">{errors.nama}</p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="p-2 rounded text-black bg-white"
+                  placeholder="Email Pelamar"
+                />
+                {errors.email && (
+                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm font-medium">Posisi</label>
+                <input
+                  type="text"
+                  name="posisi"
+                  value={form.posisi}
+                  onChange={handleChange}
+                  className="p-2 rounded text-black bg-white"
+                  placeholder="Nama Posisi"
+                />
+                {errors.posisi && (
+                  <p className="text-red-400 text-sm mt-1">{errors.posisi}</p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm font-medium">Gaji</label>
+                <Gaji
+                  label=""
+                  type="number"
+                  name="gaji"
+                  placeholder="Masukkan Gaji"
+                  value={form.gaji}
+                  onChange={(e) =>
+                    setForm({ ...form, gaji: Number(e.target.value) })
+                  }
+                />
+                {errors.gaji && (
+                  <p className="text-red-400 text-sm mt-1">{errors.gaji}</p>
+                )}
+              </div>
+              {form.gaji && (
+                <div className="right md:col-span-2 flex justify-end">
+                  <div
+                    className={`mt-2 p-2 border-l-4 ${
+                      form.gaji <= 2000000
+                        ? "bg-blue-100 border-blue-500 text-blue-800"
+                        : "bg-red-100 border-red-500 text-red-800"
+                    }`}
+                  >
+                    <p className="font-semibold">
+                      {form.gaji <= 10000000
+                        ? "Gaji Pas"
+                        : "Gaji Kemahalan, turunkan dikit😅"}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="mt-2 p-1 bg-red-100 border-l-4 border-red-500 text-red-700">
-              <p className="font-semibold">Gaji Kemahalan</p>
+            <div className="flex justify-end gap-3 bg-[#6c4432] px-6 py-4 border-t border-white/20">
+              <button
+                type="submit"
+                className={`px-6 py-2 ${
+                  editingId !== null
+                    ? "bg-yellow-500 hover:bg-yellow-600"
+                    : "bg-green-500 hover:bg-green-600"
+                } rounded text-white font-semibold`}
+              >
+                {editingId !== null ? "Simpan" : "Tambah"}
+              </button>
+              {editingId !== null && (
+                <button
+                  onClick={resetForm}
+                  type="button"
+                  className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
+                >
+                  Batal
+                </button>
+              )}
             </div>
-          )}
-
-          {/* Tombol Submit */}
-          {isValid && (
-            <button
-              onClick={handleSubmit}
-              className="mt-4 w-full bg-[#8B5E3C] text-white py-2 px-4 rounded-md hover:bg-[#A6754F] transition"
-            >
-              Kirim Lamaran
-            </button>
-          )}
+          </form>
         </div>
 
-        {/* Gambar */}
-        <div className="w-full md:w-1/2 p-2 flex justify-center">
-          <img
-            className="w-64 h-115 rounded-lg shadow-lg object-cover hover:scale-102 transition-transform duration-300"
-            src="https://i.pinimg.com/736x/9a/21/13/9a211344ac13f46a318d28a5d3698bb9.jpg"
-            alt="Gambar"
-          />
+        {/* Tabel Lowongan */}
+        <div className="overflow-x-auto">
+          <div className="min-w-[900px]">
+            <div className="grid grid-cols-6 gap-2 bg-[#8b5e45] py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
+              <div>No</div>
+              <div>Nama</div>
+              <div>Email</div>
+              <div>Posisi</div>
+              <div>Gaji</div>
+              <div>Aksi</div>
+            </div>
+            {lowongans.map((lowongan, i) => (
+              <div
+                key={lowongan.id}
+                className="grid grid-cols-6 items-center py-4 gap-2 bg-[#6c4432] transition text-sm text-center"
+              >
+                <div>{i + 1}</div>
+                <div>{lowongan.nama}</div>
+                <div>{lowongan.email}</div>
+                <div>{lowongan.posisi}</div>
+                <div>Rp {Number(lowongan.gaji).toLocaleString()}</div>
+                <div className="flex flex-row justify-center gap-3">
+                  <button
+                    className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
+                    onClick={() => handleEdit(lowongan)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+                    onClick={() => handleDelete(lowongan.id)}
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            ))}
+            {lowongans.length === 0 && (
+              <div className="p-4 bg-[#6c4432] text-center text-white rounded-b-lg">
+                Belum ada lowongan.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

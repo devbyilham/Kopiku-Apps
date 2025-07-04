@@ -6,7 +6,7 @@ const Menu = React.lazy(() => import("./pages/Menu"));
 const Artikel = React.lazy(() => import("./pages/Artikel"));
 const Loker = React.lazy(() => import("./pages/Loker"));
 const Profil = React.lazy(() => import("./pages/Profil"));
-const NotFound = React.lazy(() => import("./pages/NotFound"));
+const Testimoni = React.lazy(() => import("./pages/Testimoni"));
 // const Error400 = React.lazy(() => import("./pages/Error400"));
 // const Error401 = React.lazy(() => import("./pages/Error401"));
 // const Error403 = React.lazy(() => import("./pages/Error403"));
@@ -25,6 +25,7 @@ const Booking = React.lazy(() => import("./pages/Booking"));
 const BookingDetail = React.lazy(() => import("./pages/BookingDetail"));
 const Contact = React.lazy(() => import("./pages/Contact"));
 const ContactDetail = React.lazy(() => import("./pages/ContactDetail"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 export default function App() {
   return (
@@ -34,22 +35,24 @@ export default function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="menu" element={<Menu />} />
           <Route path="artikel" element={<Artikel />} />
-          <Route path="loker" element={<Loker />} />
-          <Route path="profil" element={<Profil />} />
-
-          {/* <Route path="/error400" element={<Error400 />} />
-          <Route path="/error401" element={<Error401 />} />
-          <Route path="/error403" element={<Error403 />} /> */}
-
           <Route path="faq" element={<Faq />} />
           <Route path="faq/:id" element={<FaqForm />} />
           <Route path="team" element={<Team />} />
           <Route path="team/:id" element={<TeamForm />} />
+          <Route path="loker" element={<Loker />} />
+          <Route path="testimoni" element={<Testimoni />} />
+
+          
+          <Route path="profil" element={<Profil />} />
           <Route path="team/add" element={<TeamForm />} />
           <Route path="booking" element={<Booking />} />
           <Route path="booking/:id" element={<BookingDetail />} />
           <Route path="contact" element={<Contact />} />
           <Route path="contact/:id" element={<ContactDetail />} />
+
+          {/* <Route path="/error400" element={<Error400 />} />
+          <Route path="/error401" element={<Error401 />} />
+          <Route path="/error403" element={<Error403 />} /> */}
         </Route>
         <Route path="*" element={<NotFound />} />
 
