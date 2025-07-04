@@ -21,12 +21,15 @@ export default function Profil() {
   };
 
   return (
-    <div className="min-h-screen bg-[#523628] text-white font-poppins flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#523628] text-white font-poppins flex flex-col items-center">
       <div className="w-full max-w-3xl bg-white rounded-xl shadow p-6 text-black">
         <h1 className="text-3xl font-bold mb-6 text-center text-[#523628]">
           Profil Perusahaan - Kopiku ☕
         </h1>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           <div className="flex flex-col">
             <label className="mb-1 font-medium">Nama Perusahaan</label>
             <input
@@ -57,7 +60,7 @@ export default function Profil() {
               value={form.lokasi}
               onChange={handleChange}
               className="p-3 rounded bg-gray-100"
-              placeholder="Jakarta, Indonesia"
+              placeholder="Pekanbaru, Indonesia"
             />
           </div>
           <div className="flex flex-col">

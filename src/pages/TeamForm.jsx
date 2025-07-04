@@ -117,15 +117,15 @@ export default function TeamForm() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-      <div className="w-full max-w-xl space-y-6">
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins">
+      <div className="w-full max-w-xl space-y-6 p-3">
         <h1 className="text-3xl font-bold text-center drop-shadow-md">
           {isEdit ? "✏️ Edit Anggota Tim" : "➕ Tambah Anggota Tim"}
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-[#6c4432] rounded-lg p-6 space-y-4 shadow-md transition-all"
+          className="bg-[var(--color-border)] rounded-lg p-6 space-y-4 shadow-md transition-all"
         >
           <input
             type="text"

@@ -40,9 +40,9 @@ export default function Booking() {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-      <div className="w-full max-w-5xl space-y-6">
-        <h1 className="text-4xl font-bold text-center drop-shadow-md mb-8">
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins">
+      <div className="w-full max-w-6xl space-y-6 p-3">
+        <h1 className="text-3xl font-bold text-center drop-shadow-md mb-8">
           Manajemen Booking
         </h1>
 
@@ -53,14 +53,14 @@ export default function Booking() {
           placeholder="🔍 Cari nama user atau keterangan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
+          className="w-full p-3 rounded-xl text-white bg-[var(--color-border)] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           disabled={loading}
         />
 
         <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10">
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto border-collapse">
-              <thead className="bg-[#523628] font-semibold text-sm">
+              <thead className="bg-[#8b5e45] font-semibold text-sm">
                 <tr>
                   <th className="border-b border-white/20 px-4 py-3 text-left">
                     No
@@ -105,7 +105,7 @@ export default function Booking() {
                   ? filteredBooking.map((booking, index) => (
                       <tr
                         key={booking.id}
-                        className="hover:bg-[#7a5342] transition-colors duration-150"
+                        className="bg-[var(--color-border)] transition-colors duration-150"
                       >
                         <td className="border-b border-white/10 px-4 py-3 font-semibold text-white/90 text-left">
                           {index + 1}.

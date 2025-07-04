@@ -58,8 +58,8 @@ export default function User() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="w-full max-w-6xl p-6">
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins">
+      <div className="w-full max-w-6xl p-3">
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Manajemen User & Role
         </h1>
@@ -165,7 +165,7 @@ export default function User() {
                 key={user.id}
                 className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
               >
-                <div>{index + 1}</div>
+                <div>{index + 1}</div> 
                 <div>{user.nama}</div>
                 <div>{user.email}</div>
                 <div>{user.role}</div>

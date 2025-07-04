@@ -11,29 +11,22 @@ export default function Sidebar() {
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
     if (isExpanded) {
-      setOpenKategori(""); // Close any open sub-menus when collapsing
+      setOpenKategori("");
     }
   };
 
   const handleCategoryToggle = (category) => {
     if (!isExpanded) {
-      // If sidebar is collapsed, expand it first
       setIsExpanded(true);
-      // If it's not dashboard, then open the clicked category's sub-menu
       if (category !== "dashboard") {
         setOpenKategori(category);
       } else {
-        // If dashboard is clicked when collapsed, just expand sidebar, don't open sub-menu
-        setOpenKategori(""); // Ensure no sub-menu is open
+        setOpenKategori("");
       }
     } else {
-      // If sidebar is already expanded
       if (category === "dashboard") {
-        // If Dashboard is clicked when expanded, ensure no sub-menu is open and navigate
-        setOpenKategori(""); // Close any currently open sub-menu
-        // Navigation will be handled by the NavLink inside ListMenu directly for Dashboard
+        setOpenKategori("");
       } else {
-        // If another category is clicked, toggle its sub-menu
         setOpenKategori((prev) => (prev === category ? "" : category));
       }
     }

@@ -66,9 +66,8 @@ export default function Header() {
         </div>
 
         {/* Info User */}
-        <div className="flex flex-col text-sm leading-tight">
-          <span className="text-white/80">admin</span>
-          <span className="font-bold">Diego</span>
+        <div className="flex flex-col ">
+          <span className="font-bold">Admin</span>
         </div>
 
         {/* Tombol */}

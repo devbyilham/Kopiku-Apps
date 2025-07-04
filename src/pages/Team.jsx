@@ -58,10 +58,10 @@ export default function Team() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-      <div className="w-full max-w-5xl space-y-6">
-        <h1 className="text-4xl font-bold text-center drop-shadow-md mb-8">
-          👥 Manajemen Tim/Karyawan
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins">
+      <div className="w-full  max-w-6xl  space-y-6 p-3">
+        <h1 className="text-3xl font-bold text-center drop-shadow-md mb-8">
+          Manajemen Tim
         </h1>
 
         {error && <AlertBox type="error">{error}</AlertBox>}
@@ -83,7 +83,7 @@ export default function Team() {
           placeholder="🔍 Cari anggota tim..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2 rounded text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
+          className="w-full p-2 rounded text-white bg-[var(--color-border)] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           disabled={loading}
         />
 
@@ -110,7 +110,7 @@ export default function Team() {
             {filteredTeam.map((member) => (
               <div
                 key={member.id}
-                className="p-4 rounded-lg bg-[#6c4432] hover:shadow-lg transition duration-200 border border-white/10 flex gap-4 items-center shadow-md"
+                className="p-4 rounded-lg bg-[var(--color-border)] hover:shadow-lg transition duration-200 border border-white/10 flex gap-4 items-center shadow-md"
               >
                 <img
                   src={member.foto || "https://via.placeholder.com/80"}

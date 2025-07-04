@@ -81,7 +81,7 @@ export default function ManajemenLowongan() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="w-full max-w-6xl p-6">
+      <div className="w-full max-w-6xl p-3">
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Manajemen Lowongan
         </h1>
@@ -98,7 +98,7 @@ export default function ManajemenLowongan() {
             </h2>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#6c4432] p-6 text-white">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[var(--color-border)] p-6 text-white">
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium">Nama</label>
                 <input
@@ -175,7 +175,7 @@ export default function ManajemenLowongan() {
                 </div>
               )}
             </div>
-            <div className="flex justify-end gap-3 bg-[#6c4432] px-6 py-4 border-t border-white/20">
+            <div className="flex justify-end gap-3 bg-[var(--color-border)] px-6 py-4 border-t border-white/20">
               <button
                 type="submit"
                 className={`px-6 py-2 ${
@@ -213,7 +213,7 @@ export default function ManajemenLowongan() {
             {lowongans.map((lowongan, i) => (
               <div
                 key={lowongan.id}
-                className="grid grid-cols-6 items-center py-4 gap-2 bg-[#6c4432] transition text-sm text-center"
+                className="grid grid-cols-6 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
               >
                 <div>{i + 1}</div>
                 <div>{lowongan.nama}</div>

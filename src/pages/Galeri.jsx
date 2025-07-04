@@ -64,7 +64,7 @@ export default function Galeri() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="w-full max-w-6xl p-6">
+      <div className="w-full max-w-6xl p-3">
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Galeri Media
         </h1>

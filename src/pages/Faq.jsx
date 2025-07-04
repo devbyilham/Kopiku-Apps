@@ -58,11 +58,11 @@ export default function Faq() {
   );
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins p-6 pb-16">
-      <h1 className="text-3xl font-bold text-center drop-shadow-md mb-6">
-        Daftar FAQ
-      </h1>
-      <div className="w-full max-w-5xl space-y-6 relative">
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins ">
+      <div className="w-full max-w-6xl p-3 space-y-6 relative">
+        <h1 className="text-3xl font-bold text-center drop-shadow-md mb-6">
+          Daftar FAQ
+        </h1>
         {success && (
           <div className="fixed top-5 right-5 z-50 animate-fade-in">
             <AlertBox type="success">{success}</AlertBox>
@@ -82,11 +82,11 @@ export default function Faq() {
           placeholder="🔍 Cari pertanyaan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
+          className="w-full p-3 rounded-xl text-white bg-[var(--color-border)] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           disabled={loading}
         />
 
-        <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10 p-4">
+        <div className="bg-[var(--color-border)] rounded-2xl shadow-lg overflow-hidden border border-white/10 p-4">
           <h3 className="text-xl font-semibold text-white mb-4">
             Daftar FAQ ({filteredFaq.length})
           </h3>

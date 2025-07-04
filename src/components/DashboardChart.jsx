@@ -1,4 +1,3 @@
-// DashboardChart.jsx
 import {
   LineChart,
   Line,
@@ -13,13 +12,13 @@ import {
 
 export default function DashboardChart() {
   const loginData = [
-    { day: "Sen", jumlah: 30 },
-    { day: "Sel", jumlah: 50 },
-    { day: "Rab", jumlah: 40 },
-    { day: "Kam", jumlah: 60 },
-    { day: "Jum", jumlah: 35 },
-    { day: "Sab", jumlah: 25 },
-    { day: "Min", jumlah: 45 },
+    { day: "Mon", jumlah: 30 },
+    { day: "Tue", jumlah: 50 },
+    { day: "Wed", jumlah: 40 },
+    { day: "Thu", jumlah: 60 },
+    { day: "Fri", jumlah: 35 },
+    { day: "Sat", jumlah: 25 },
+    { day: "Sun", jumlah: 45 },
   ];
 
   const artikelData = [
@@ -29,12 +28,22 @@ export default function DashboardChart() {
     { name: "Americano", views: 90 },
   ];
 
+  const bookingData = [
+    { day: "Mon", total: 10 },
+    { day: "Tue", total: 14 },
+    { day: "Wed", total: 12 },
+    { day: "Thu", total: 18 },
+    { day: "Fri", total: 20 },
+    { day: "Sat", total: 22 },
+    { day: "Sun", total: 15 },
+  ];
+
   return (
-    <div className="px-1 md:px-1 grid grid-cols-1 md:grid-cols-2 gap-6 p-1">
-      {/* Chart Login */}
-      <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl ">
+    <div className="px-1 md:px-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-1">
+      {/* Login Chart */}
+      <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl">
         <div className="card-body">
-          <h2 className="card-title">Login Pengguna</h2>
+          <h2 className="card-title">User Logins</h2>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={loginData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ffffff30" />
@@ -52,10 +61,26 @@ export default function DashboardChart() {
         </div>
       </div>
 
-      {/* Chart Artikel Populer */}
+      {/* Booking Chart */}
       <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl">
         <div className="card-body">
-          <h2 className="card-title">Artikel Populer</h2>
+          <h2 className="card-title">Booking Statistics</h2>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={bookingData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff30" />
+              <XAxis dataKey="day" stroke="#f4eae6" />
+              <YAxis stroke="#f4eae6" />
+              <Tooltip />
+              <Bar dataKey="total" fill="#f08c50" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Popular Articles Chart */}
+      <div className="card bg-[#8b5e45] text-white shadow-md rounded-xl">
+        <div className="card-body">
+          <h2 className="card-title">Popular Articles</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={artikelData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ffffff30" />

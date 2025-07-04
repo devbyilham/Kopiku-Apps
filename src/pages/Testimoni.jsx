@@ -87,7 +87,7 @@ export default function Testimoni() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="w-full max-w-6xl p-6">
+      <div className="w-full max-w-6xl p-3">
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Testimoni
         </h1>
@@ -109,7 +109,7 @@ export default function Testimoni() {
               {editMode ? "✏️ Edit Testimoni" : "➕ Tambah Testimoni"}
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#6c4432] p-6 text-white">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[var(--color-border)] p-6 text-white">
             <div className="flex flex-col">
               <label className="mb-1 text-sm font-medium">Nama</label>
               <input
@@ -133,7 +133,7 @@ export default function Testimoni() {
               ></textarea>
             </div>
           </div>
-          <div className="flex justify-end gap-3 bg-[#6c4432] px-6 py-4 border-t border-white/20">
+          <div className="flex justify-end gap-3 bg-[var(--color-border)] px-6 py-4 border-t border-white/20">
             <button
               onClick={handleSubmit}
               className={`px-6 py-2 ${
@@ -166,12 +166,12 @@ export default function Testimoni() {
             placeholder="🔍 Cari nama pelanggan..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
+            className="w-full p-3 rounded-xl text-white bg-[var(--color-border)] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           />
         </div>
 
         {/* List Testimoni */}
-        <ul className="list bg-[#6c4432] rounded-box shadow-md divide-y divide-white/10">
+        <ul className="list bg-[var(--color-border)] rounded-box shadow-md divide-y divide-white/10">
           {filtered.map((item, index) => (
             <li
               key={item.id}

@@ -85,8 +85,8 @@ export default function BookingDetail() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
-      <div className="w-full max-w-md bg-[#6c4432] rounded-2xl p-8 shadow-xl border border-white/10">
+    <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins p-3">
+      <div className="w-full max-w-md bg-[var(--color-border)] rounded-2xl p-8 shadow-xl border border-white/10">
         <h1 className="text-3xl font-bold mb-8 text-center text-white drop-shadow-md">
           Detail Booking
         </h1>

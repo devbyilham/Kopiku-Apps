@@ -116,7 +116,8 @@ export default function FaqForm() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#523628] text-white font-poppins px-4 py-10">
+    <div className="flex flex-col items-center w-full min-h-screen bg-[#523628] text-white font-poppins p-3">
+
       {/* Toast Alert */}
       {toast && (
         <div className="fixed top-5 right-5 z-50 animate-fade-in">
@@ -131,7 +132,7 @@ export default function FaqForm() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-[#6c4432] rounded-lg p-6 space-y-4 shadow-md transition-all"
+          className="bg-[var(--color-border)] rounded-lg p-6 space-y-4 shadow-md transition-all"
         >
           <input
             type="text"

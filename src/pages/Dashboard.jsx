@@ -24,21 +24,19 @@ export default function Dashboard() {
   const stats = [
     { title: "Pengunjung", value: "1.253", icon: <FaUserFriends /> },
     { title: "Total Produk", value: "48", icon: <FaClipboardList /> },
-    { title: "Total Artikel", value: "12", icon: <FaRegNewspaper /> },
+    { title: "Total Artikel", value: "5", icon: <FaRegNewspaper /> },
     { title: "Total Booking", value: "36", icon: <FaCalendarCheck /> },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--color-header)] text-white px-6 py-4 space-y-6">
       <PageHeader title="Menu Kopi" categories={categories} />
-      {/* Daftar Menu */}
       <CardCount />
 
       <div className="px-1 mt-12">
         <h1 className="mb-6 text-2xl text-[var(--color-white)] font-semibold">
           Statistik
         </h1>
-        {/* Statistik Ringkas */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
             <StatBox key={i} title={s.title} value={s.value} icon={s.icon} />
@@ -50,7 +48,6 @@ export default function Dashboard() {
         <h1 className="mt-2 mb-6 text-2xl text-[var(--color-white)] font-semibold">
           Grafik
         </h1>
-        {/* Grafik */}
         <DashboardCharts />
       </div>
     </div>

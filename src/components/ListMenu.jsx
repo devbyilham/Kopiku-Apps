@@ -1,72 +1,222 @@
-import { useState } from "react";
-import { GiCoffeeCup } from "react-icons/gi";
-import { FiLogOut } from "react-icons/fi";
-import ListMenu from "./ListMenu";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { GoHomeFill } from "react-icons/go";
+import { BiFoodMenu, BiSearchAlt2 } from "react-icons/bi";
+import { MdArticle, MdRateReview, MdPermMedia } from "react-icons/md";
+import {
+  FaQuestionCircle,
+  FaFolder,
+  FaBuilding,
+  FaRegCommentDots,
+  FaUserAlt,
+} from "react-icons/fa";
+import { RiTeamFill, RiProfileFill } from "react-icons/ri";
+import {
+  AiOutlineBook,
+  AiFillContacts,
+  AiOutlineUserSwitch,
+} from "react-icons/ai";
+import { BsCalendarCheck } from "react-icons/bs";
 
-export default function Sidebar() {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [openKategori, setOpenKategori] = useState("");
-
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
-    if (isExpanded) {
-      setOpenKategori(""); // Close any open sub-menus when collapsing
-    }
-  };
-
-  const handleCategoryToggle = (category) => {
-    if (!isExpanded) {
-      // If sidebar is collapsed, expand it first
-      setIsExpanded(true);
-      // If it's not dashboard, then open the clicked category's sub-menu
-      if (category !== "dashboard") {
-        setOpenKategori(category);
-      } else {
-        // If dashboard is clicked when collapsed, just expand sidebar, don't open sub-menu
-        setOpenKategori(""); // Ensure no sub-menu is open
+export default function ListMenu({
+  isSidebarExpanded,
+  openKategori,
+  onCategoryToggle,
+}) {
+  const menuClass = ({ isActive }) =>
+    `flex items-center gap-2 text-[16px] px-3 py-1 rounded transition duration-200 w-full
+      ${
+        isActive
+          ? "text-[var(--color-primary)] "
+          : "text-white hover:text-[var(--color-primary)]"
       }
-    } else {
-      // If sidebar is already expanded
-      if (category === "dashboard") {
-        // If Dashboard is clicked when expanded, ensure no sub-menu is open and navigate
-        setOpenKategori(""); // Close any currently open sub-menu
-        // Navigation will be handled by the NavLink inside ListMenu directly for Dashboard
-      } else {
-        // If another category is clicked, toggle its sub-menu
-        setOpenKategori((prev) => (prev === category ? "" : category));
-      }
-    }
-  };
+      ${isSidebarExpanded ? "justify-start" : "justify-center"}`;
+
+  const iconClass = `text-[30px] cursor-pointer text-white hover:text-[var(--color-primary)]`;
 
   return (
-    <div
-      id="sidebar"
-      className={`flex min-h-screen ${
-        isExpanded ? "w-64" : "w-20"
-      } flex-col bg-[var(--color-border)] p-6 shadow-lg text-white font-poppins transition-all duration-300 ease-in-out`}
-    >
-      <div id="sidebar-logo" className="flex flex-col items-center">
-        <span
-          id="logo"
-          className="text-[50px] drop-shadow-md cursor-pointer"
-          onClick={toggleSidebar}
-        >
-          <GiCoffeeCup />
-        </span>
-      </div>
+    <div id="sidebar-menu" className="mt-20 font-poppins w-full">
+      <ul className="space-y-4 flex flex-col items-center">
+        <li className="w-full flex flex-col items-center">
+          <div
+            onClick={() => onCategoryToggle("dashboard")}
+            className={`flex items-center gap-2 w-full ${iconClass} ${
+              isSidebarExpanded ? "px-3 justify-start" : "justify-center"
+            }`}
+          >
+            <NavLink
+              to="dashboard"
+              className={({ isActive }) =>
+                `flex items-center gap-2 flex-grow ${
+                  isActive
+                    ? "text-[var(--color-primary)]"
+                    : "text-white hover:text-[var(--color-primary)]"
+                }`
+              }
+            >
+              <GoHomeFill />
+              {isSidebarExpanded && (
+                <span className="text-[16px] text-white">Dashboard</span>
+              )}
+            </NavLink>
+          </div>
+        </li>
 
-      <ListMenu
-        isSidebarExpanded={isExpanded}
-        openKategori={openKategori}
-        onCategoryToggle={handleCategoryToggle}
-      />
+        {/* === KONTEN === */}
+        <li className="w-full flex flex-col items-center">
+          <div
+            onClick={() => onCategoryToggle("konten")}
+            className={`flex items-center gap-2 w-full ${iconClass} ${
+              isSidebarExpanded ? "px-3 justify-start" : "justify-center"
+            }`}
+          >
+            <FaFolder />
+            {isSidebarExpanded && (
+              <span className="text-[16px] text-white">Content</span>
+            )}
+          </div>
+          <div
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
+              openKategori === "konten" && isSidebarExpanded
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0"
+            } w-full`}
+          >
+            <ul className="mt-2 space-y-1 w-full px-2">
+              <li>
+                <NavLink to="menu" className={menuClass}>
+                  <BiFoodMenu /> {isSidebarExpanded && "Menu"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="artikel" className={menuClass}>
+                  <MdArticle /> {isSidebarExpanded && "Artikel"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="faq" className={menuClass}>
+                  <FaQuestionCircle /> {isSidebarExpanded && "FAQ"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="testimoni" className={menuClass}>
+                  <MdRateReview /> {isSidebarExpanded && "Testimoni"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="galeri" className={menuClass}>
+                  <MdPermMedia /> {isSidebarExpanded && "Galeri"}
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </li>
 
-      <div id="sidebar-footer" className="mt-auto flex justify-center pt-10">
-        <Link to="/" className="text-[30px] hover:text-yellow-300 transition">
-          <FiLogOut />
-        </Link>
-      </div>
+        {/* === ORGANISASI === */}
+        <li className="w-full flex flex-col items-center">
+          <div
+            onClick={() => onCategoryToggle("organisasi")}
+            className={`flex items-center gap-2 w-full ${iconClass} ${
+              isSidebarExpanded ? "px-3 justify-start" : "justify-center"
+            }`}
+          >
+            <FaBuilding />
+            {isSidebarExpanded && (
+              <span className="text-[16px] text-white">About Us</span>
+            )}
+          </div>
+          <div
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
+              openKategori === "organisasi" && isSidebarExpanded
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0"
+            } w-full`}
+          >
+            <ul className="mt-2 space-y-1 w-full px-2">
+              <li>
+                <NavLink to="team" className={menuClass}>
+                  <RiTeamFill /> {isSidebarExpanded && "Team"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="loker" className={menuClass}>
+                  <BiSearchAlt2 /> {isSidebarExpanded && "Loker"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="profil" className={menuClass}>
+                  <RiProfileFill /> {isSidebarExpanded && "Profil"}
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        {/* === INTERAKSI === */}
+        <li className="w-full flex flex-col items-center">
+          <div
+            onClick={() => onCategoryToggle("interaksi")}
+            className={`flex items-center gap-2 w-full ${iconClass} ${
+              isSidebarExpanded ? "px-3 justify-start" : "justify-center"
+            }`}
+          >
+            <FaRegCommentDots />
+            {isSidebarExpanded && (
+              <span className="text-[16px] text-white">Services</span>
+            )}
+          </div>
+          <div
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
+              openKategori === "interaksi" && isSidebarExpanded
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0"
+            } w-full`}
+          >
+            <ul className="mt-2 space-y-1 w-full px-2">
+              <li>
+                <NavLink to="booking" className={menuClass}>
+                  <AiOutlineBook /> {isSidebarExpanded && "Booking"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="contact" className={menuClass}>
+                  <AiFillContacts /> {isSidebarExpanded && "Kontak"}
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        {/* === USER === */}
+        <li className="w-full flex flex-col items-center">
+          <div
+            onClick={() => onCategoryToggle("user")}
+            className={`flex items-center gap-2 w-full ${iconClass} ${
+              isSidebarExpanded ? "px-3 justify-start" : "justify-center"
+            }`}
+          >
+            <FaUserAlt />
+            {isSidebarExpanded && (
+              <span className="text-[16px] text-white">Management</span>
+            )}
+          </div>
+          <div
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
+              openKategori === "user" && isSidebarExpanded
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0"
+            } w-full`}
+          >
+            <ul className="mt-2 space-y-1 w-full px-2">
+              <li>
+                <NavLink to="user" className={menuClass}>
+                  <AiOutlineUserSwitch />{" "}
+                  {isSidebarExpanded && "Manajemen User"}
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
     </div>
   );
 }
