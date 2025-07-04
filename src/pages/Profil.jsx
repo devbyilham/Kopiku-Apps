@@ -1,139 +1,108 @@
-export default function Projek() {
+import { useState } from "react";
+
+export default function Profil() {
+  const [form, setForm] = useState({
+    nama: "",
+    alamat: "",
+    lokasi: "",
+    email: "",
+    telp: "",
+    website: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Data Perusahaan:", form);
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen bg-[#523628] text-white font-[Poppins] flex-wrap gap-4">
-      <div className="bg-[#754e3d] p-8 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1 transition-all">
-        <Login />
-      </div>
-      <div className="bg-[#754e3d] p-8 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1 transition-all">
-        <Profil />
-      </div>
-    </div>
-  );
-}
-
-function Login() {
-  return (
-    <div className="flex items-center gap-12 flex-wrap text-center">
-      <div className="flex flex-col gap-4">
-        <Judul />
-        <Email />
-        <Password />
-        <Submit />
-      </div>
-      <Gambar />
-    </div>
-  );
-}
-
-function Judul() {
-  return <h2 className="text-3xl mb-2 -mt-2">Login</h2>;
-}
-
-function Email() {
-  return (
-    <div className="flex flex-col">
-      <label className="text-base mb-1">Masukkan Email</label>
-      <input
-        type="email"
-        placeholder="Email"
-        className="p-3 text-base rounded-lg bg-white text-black focus:outline-none focus:shadow-md transition-all"
-      />
-    </div>
-  );
-}
-
-function Password() {
-  return (
-    <div className="flex flex-col">
-      <label className="text-base mb-1">Masukkan Password</label>
-      <input
-        type="password"
-        placeholder="Password"
-        className="p-3 text-base rounded-lg bg-white text-black focus:outline-none focus:shadow-md transition-all"
-      />
-    </div>
-  );
-}
-
-function Submit() {
-  return (
-    <button className="bg-[#f08c50] text-white py-3 px-4 text-lg rounded-lg mt-6 hover:bg-[#d9773a] hover:scale-105 transition-all">
-      Login
-    </button>
-  );
-}
-
-function Gambar() {
-  return (
-    <img
-      className="w-[250px] rounded-lg transition-transform hover:scale-105"
-      src="https://i.pinimg.com/736x/9a/21/13/9a211344ac13f46a318d28a5d3698bb9.jpg"
-      alt="Gambar"
-    />
-  );
-}
-
-function Profil() {
-  return (
-    <div className="flex flex-col items-center gap-4 text-center">
-      <div className="flex flex-col gap-4">
-        <Lokasi />
-        <Jam />
-        <Temukan />
-        <Kontak />
-      </div>
-    </div>
-  );
-}
-
-function Lokasi() {
-  return <h3 className="text-xl">☕ Lokasi : Jl. Air Dingin, Pekanbaru</h3>;
-}
-
-function Jam() {
-  return (
-    <h3 className="text-xl">🕰️ Jam Buka : Senin - Minggu, 07.00 - 23.00 WIB</h3>
-  );
-}
-
-function Temukan() {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <h3 className="text-xl">📍 Temukan Kami :</h3>
-      <div className="flex justify-center gap-4">
-        <a
-          href="https://instagram.com/aromacoffee"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 no-underline text-white px-2 py-1 rounded-lg hover:opacity-70 hover:scale-105 transition-all"
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-            alt="Instagram"
-            className="w-[30px] h-[30px]"
-          />
-          Instagram
-        </a>
-        <a
-          href="https://facebook.com/aromacoffee"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 no-underline text-white px-2 py-1 rounded-lg hover:opacity-70 hover:scale-105 transition-all"
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-            alt="Facebook"
-            className="w-[30px] h-[30px]"
-          />
-          Facebook
-        </a>
+    <div className="min-h-screen bg-[#523628] text-white font-poppins flex items-center justify-center p-6">
+      <div className="w-full max-w-3xl bg-white rounded-xl shadow p-6 text-black">
+        <h1 className="text-3xl font-bold mb-6 text-center text-[#523628]">
+          Profil Perusahaan - Kopiku ☕
+        </h1>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">Nama Perusahaan</label>
+            <input
+              type="text"
+              name="nama"
+              value={form.nama}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="Kopiku"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">Alamat</label>
+            <input
+              type="text"
+              name="alamat"
+              value={form.alamat}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="Jl. Aroma Kopi No. 123"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">Lokasi</label>
+            <input
+              type="text"
+              name="lokasi"
+              value={form.lokasi}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="Jakarta, Indonesia"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="kopiku@email.com"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">No. Telepon</label>
+            <input
+              type="tel"
+              name="telp"
+              value={form.telp}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="0812xxxxxxx"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium">Website</label>
+            <input
+              type="text"
+              name="website"
+              value={form.website}
+              onChange={handleChange}
+              className="p-3 rounded bg-gray-100"
+              placeholder="www.kopiku.id"
+            />
+          </div>
+          <div className="md:col-span-2 text-right">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-[#a06c47] text-white rounded hover:bg-[#8b5e45] transition"
+            >
+              Simpan Profil
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  );
-}
-
-function Kontak() {
-  return (
-    <h3 className="text-xl">📞 Hubungi : +62 812-3456-7890 (WA & Telp)</h3>
   );
 }

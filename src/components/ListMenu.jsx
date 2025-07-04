@@ -1,3 +1,6 @@
+import { MdPermMedia } from "react-icons/md";
+import { RiProfileFill } from "react-icons/ri";
+import { AiOutlineUserSwitch } from "react-icons/ai";
 import { MdRateReview } from "react-icons/md";
 import { BiFoodMenu } from "react-icons/bi";
 import { MdArticle } from "react-icons/md";
@@ -61,11 +64,31 @@ export default function ListMenu() {
             <MdRateReview />
           </NavLink>
         </li>
-        {/* <li>
-          <NavLink id="menu-5" to="profil" className={menuClass}>
-            <CgProfile />
+        <li>
+          <NavLink id="menu-8" to="booking" className={menuClass}>
+            <AiOutlineBook />
           </NavLink>
-        </li> */}
+        </li>
+        <li>
+          <NavLink id="menu-9" to="contact" className={menuClass}>
+            <AiFillContacts />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-10" to="user" className={menuClass}>
+            <AiOutlineUserSwitch />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-11" to="profil" className={menuClass}>
+            <RiProfileFill />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink id="menu-12" to="galeri" className={menuClass}>
+            <MdPermMedia />
+          </NavLink>
+        </li>
         {/* <li>
           <NavLink id="menu-5" to="error400" className={menuClass}>
             <BiErrorCircle />
@@ -81,16 +104,6 @@ export default function ListMenu() {
             <BiMessageSquareError />
           </NavLink>
         </li> */}
-        <li>
-          <NavLink id="menu-10" to="booking" className={menuClass}>
-            <AiOutlineBook />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-11" to="contact" className={menuClass}>
-            <AiFillContacts />
-          </NavLink>
-        </li>
       </ul>
     </div>
   );

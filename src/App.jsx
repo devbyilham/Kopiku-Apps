@@ -4,12 +4,19 @@ import "./assets/tailwind.css";
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Menu = React.lazy(() => import("./pages/Menu"));
 const Artikel = React.lazy(() => import("./pages/Artikel"));
+const Faq = React.lazy(() => import("./pages/Faq"));
+const FaqForm = React.lazy(() => import("./pages/FaqForm"));
+const Team = React.lazy(() => import("./pages/Team"));
+const TeamForm = React.lazy(() => import("./pages/TeamForm"));
 const Loker = React.lazy(() => import("./pages/Loker"));
-const Profil = React.lazy(() => import("./pages/Profil"));
 const Testimoni = React.lazy(() => import("./pages/Testimoni"));
-// const Error400 = React.lazy(() => import("./pages/Error400"));
-// const Error401 = React.lazy(() => import("./pages/Error401"));
-// const Error403 = React.lazy(() => import("./pages/Error403"));
+const Booking = React.lazy(() => import("./pages/Booking"));
+const BookingDetail = React.lazy(() => import("./pages/BookingDetail"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const ContactDetail = React.lazy(() => import("./pages/ContactDetail"));
+const User = React.lazy(() => import("./pages/User"));
+const Profil = React.lazy(() => import("./pages/Profil"));
+const Galeri = React.lazy(() => import("./pages/Galeri"));
 const MainLayout = React.lazy(() => import("./layouts/MainLayout"));
 const AuthLayout = React.lazy(() => import("./layouts/AuthLayout"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -17,15 +24,10 @@ const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const ResetPassword = React.lazy(() => import("./pages/auth/ResetPassword"));
 const Loading = React.lazy(() => import("./components/Loading"));
-const Faq = React.lazy(() => import("./pages/Faq"));
-const FaqForm = React.lazy(() => import("./pages/FaqForm"));
-const Team = React.lazy(() => import("./pages/Team"));
-const TeamForm = React.lazy(() => import("./pages/TeamForm"));
-const Booking = React.lazy(() => import("./pages/Booking"));
-const BookingDetail = React.lazy(() => import("./pages/BookingDetail"));
-const Contact = React.lazy(() => import("./pages/Contact"));
-const ContactDetail = React.lazy(() => import("./pages/ContactDetail"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
+// const Error400 = React.lazy(() => import("./pages/Error400"));
+// const Error401 = React.lazy(() => import("./pages/Error401"));
+// const Error403 = React.lazy(() => import("./pages/Error403"));
 
 export default function App() {
   return (
@@ -39,16 +41,16 @@ export default function App() {
           <Route path="faq/:id" element={<FaqForm />} />
           <Route path="team" element={<Team />} />
           <Route path="team/:id" element={<TeamForm />} />
+          <Route path="team/add" element={<TeamForm />} />
           <Route path="loker" element={<Loker />} />
           <Route path="testimoni" element={<Testimoni />} />
-
-          
-          <Route path="profil" element={<Profil />} />
-          <Route path="team/add" element={<TeamForm />} />
           <Route path="booking" element={<Booking />} />
           <Route path="booking/:id" element={<BookingDetail />} />
           <Route path="contact" element={<Contact />} />
           <Route path="contact/:id" element={<ContactDetail />} />
+          <Route path="user" element={<User />} />
+          <Route path="profil" element={<Profil />} />
+          <Route path="galeri" element={<Galeri />} />
 
           {/* <Route path="/error400" element={<Error400 />} />
           <Route path="/error401" element={<Error401 />} />
