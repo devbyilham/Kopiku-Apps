@@ -31,7 +31,7 @@ export default function ListMenu() {
       <ul id="menu-list" className="space-y-6 flex flex-col items-center">
         <li>
           <NavLink id="menu-1" to="dashboard" className={menuClass}>
-            <GoHomeFill />
+            <GoHomeFill /> 
           </NavLink>
         </li>
         <li>

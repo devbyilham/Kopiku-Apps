@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Pencil, Trash2 } from "lucide-react";
 import { TestimoniAPI } from "../services/TestimoniAPI";
 
 export default function Testimoni() {
@@ -169,46 +170,42 @@ export default function Testimoni() {
           />
         </div>
 
-        {/* Tabel Testimoni */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[700px]">
-            <div className="grid grid-cols-4 gap-2 bg-[#8b5e45] py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
-              <div>No</div>
-              <div>Nama</div>
-              <div>Review</div>
-              <div>Aksi</div>
-            </div>
-            {filtered.map((item, index) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-4 items-center py-4 gap-2 bg-[#6c4432] transition text-sm text-center"
-              >
-                <div>{index + 1}</div>
-                <div>{item.nama}</div>
-                <div className="text-justify px-2">{item.review}</div>
-                <div className="flex flex-row justify-center gap-5">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
-                  >
-                    Hapus
-                  </button>
-                </div>
+        {/* List Testimoni */}
+        <ul className="list bg-[#6c4432] rounded-box shadow-md divide-y divide-white/10">
+          {filtered.map((item, index) => (
+            <li
+              key={item.id}
+              className="list-row p-4 flex flex-col md:flex-row md:items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-10 h-10 bg-[#8b5e45] rounded-full flex items-center justify-center font-bold text-white">
+                {index + 1}
               </div>
-            ))}
-            {filtered.length === 0 && !loading && (
-              <div className="text-center py-6 text-white">
-                Tidak ada testimoni ditemukan.
+              <div className="flex-1">
+                <div className="font-semibold">{item.nama}</div>
+                <div className="text-sm mt-1 opacity-80">{item.review}</div>
               </div>
-            )}
-          </div>
-        </div>
+              <div className="flex gap-2 mt-2 md:mt-0">
+                <button onClick={() => handleEdit(item)} title="Edit Testimoni">
+                  <Pencil className="text-yellow-300 hover:text-yellow-400 transition-colors" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(item.id);
+                  }}
+                  title="Hapus Testimoni"
+                >
+                  <Trash2 className="text-red-400 hover:text-red-500 transition-colors" />
+                </button>
+              </div>
+            </li>
+          ))}
+          {filtered.length === 0 && !loading && (
+            <li className="text-center py-6 text-white opacity-70">
+              Tidak ada testimoni ditemukan.
+            </li>
+          )}
+        </ul>
       </div>
     </div>
   );

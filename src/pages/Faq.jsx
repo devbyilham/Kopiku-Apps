@@ -63,13 +63,11 @@ export default function Faq() {
         Daftar FAQ
       </h1>
       <div className="w-full max-w-5xl space-y-6 relative">
-        {/* Alert Sukses */}
         {success && (
           <div className="fixed top-5 right-5 z-50 animate-fade-in">
             <AlertBox type="success">{success}</AlertBox>
           </div>
         )}
-
         {error && <AlertBox type="error">{error}</AlertBox>}
 
         <Link
@@ -78,6 +76,7 @@ export default function Faq() {
         >
           <PlusCircle size={18} /> Tambah FAQ Baru
         </Link>
+
         <input
           type="text"
           placeholder="🔍 Cari pertanyaan..."
@@ -86,12 +85,12 @@ export default function Faq() {
           className="w-full p-3 rounded-xl text-white bg-[#6c4432] border border-white/10 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a06c47] shadow-md"
           disabled={loading}
         />
-        <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10">
-          <div className="px-6 py-4 border-b border-white/10">
-            <h3 className="text-xl font-semibold text-white">
-              Daftar FAQ ({filteredFaq.length})
-            </h3>
-          </div>
+
+        <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10 p-4">
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Daftar FAQ ({filteredFaq.length})
+          </h3>
+
           {loading ? (
             <div className="p-8 text-center text-white text-lg font-medium">
               <LoadingSpinner text="Memuat FAQ..." />
@@ -100,67 +99,45 @@ export default function Faq() {
             <div className="p-8 text-center text-white text-lg font-medium">
               <EmptyState text="Belum ada FAQ. Tambah FAQ pertama Anda!" />
             </div>
-          ) : filteredFaq.length === 0 && error ? (
-            <div className="p-8 text-center text-red-500 text-lg font-medium">
-              Terjadi Kesalahan. Coba lagi nanti.
-            </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-white/20">
-                <thead className="bg-[#523628]">
-                  <tr>
-                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                      No
-                    </th>
-                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                      Pertanyaan
-                    </th>
-                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                      Jawaban
-                    </th>
-                    <th className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-[#6c4432] divide-y divide-white/10">
-                  {filteredFaq.map((faq, index) => (
-                    <tr
-                      key={faq.id}
-                      className="hover:bg-[#7a5342] transition-colors duration-150"
+            <div className="space-y-3">
+              {filteredFaq.map((faq, index) => (
+                <div
+                  key={faq.id}
+                  className="collapse collapse-plus bg-[#523628] border border-white/10 rounded-xl"
+                >
+                  <input type="checkbox" />
+                  <div className="collapse-title font-semibold text-white flex justify-between items-center">
+                    <span>
+                      {index + 1}. {faq.pertanyaan}
+                    </span>
+                    <div
+                      className="flex gap-3 z-10"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap font-medium text-white">
-                        {index + 1}.
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-white line-clamp-3">
-                          {faq.pertanyaan}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 max-w-xs">
-                        <div className="text-white line-clamp-3">
-                          {faq.jawaban}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap flex gap-3 items-center">
-                        <Link
-                          to={`/faq/${faq.id}`}
-                          className="text-yellow-300 hover:text-yellow-400 transition-colors"
-                          title="Edit FAQ"
-                        >
-                          <Pencil size={20} />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(faq.id)}
-                          title="Hapus FAQ"
-                        >
-                          <Trash2 className="text-red-400 hover:text-red-500 transition-colors" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      <Link
+                        to={`/faq/${faq.id}`}
+                        className="text-yellow-300 hover:text-yellow-400 transition-colors"
+                        title="Edit FAQ"
+                      >
+                        <Pencil size={20} />
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(faq.id);
+                        }}
+                        title="Hapus FAQ"
+                      >
+                        <Trash2 className="text-red-400 hover:text-red-500 transition-colors" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse-content text-sm text-white">
+                    {faq.jawaban}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -11,7 +11,7 @@ export default function Sidebar() {
       className="flex min-h-screen w-20 flex-col bg-[var(--color-border)]  p-6 shadow-lg text-white font-poppins"
     >
       <div id="sidebar-logo" className="flex flex-col items-center">
-        <span id="logo" className="text-[48px] drop-shadow-md">
+        <span id="logo" className="text-[50px] drop-shadow-md">
           <GiCoffeeCup />
         </span>
       </div>
@@ -19,7 +19,7 @@ export default function Sidebar() {
       <ListMenu />
 
       <div id="sidebar-footer" className="mt-auto flex justify-center pt-10">
-        <Link to="/" className="text-[35px] hover:text-yellow-300 transition">
+        <Link to="/" className="text-[30px] hover:text-yellow-300 transition">
           <FiLogOut />
         </Link>
       </div>
