@@ -1,110 +1,72 @@
-import { MdPermMedia } from "react-icons/md";
-import { RiProfileFill } from "react-icons/ri";
-import { AiOutlineUserSwitch } from "react-icons/ai";
-import { MdRateReview } from "react-icons/md";
-import { BiFoodMenu } from "react-icons/bi";
-import { MdArticle } from "react-icons/md";
-import { AiFillContacts } from "react-icons/ai";
-import { AiOutlineBook } from "react-icons/ai";
-import { RiTeamFill } from "react-icons/ri";
-import { FaQuestionCircle } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
-import { BiSearchAlt2 } from "react-icons/bi";
-import { VscListSelection } from "react-icons/vsc";
-import { GoHomeFill } from "react-icons/go";
-import { BiErrorCircle } from "react-icons/bi";
-import { BiMessageSquareError } from "react-icons/bi";
-import { BiError } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { GiCoffeeCup } from "react-icons/gi";
+import { FiLogOut } from "react-icons/fi";
+import ListMenu from "./ListMenu";
+import { Link } from "react-router-dom";
 
-export default function ListMenu() {
-  const menuClass = ({ isActive }) =>
-    `text-[30px] transition duration-200
-     ${
-       isActive
-         ? "text-[var(--color-primary)]"
-         : "text-[var(--color-white)] hover:text-[var(--color-primary)]"
-     }`;
+export default function Sidebar() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [openKategori, setOpenKategori] = useState("");
+
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+    if (isExpanded) {
+      setOpenKategori(""); // Close any open sub-menus when collapsing
+    }
+  };
+
+  const handleCategoryToggle = (category) => {
+    if (!isExpanded) {
+      // If sidebar is collapsed, expand it first
+      setIsExpanded(true);
+      // If it's not dashboard, then open the clicked category's sub-menu
+      if (category !== "dashboard") {
+        setOpenKategori(category);
+      } else {
+        // If dashboard is clicked when collapsed, just expand sidebar, don't open sub-menu
+        setOpenKategori(""); // Ensure no sub-menu is open
+      }
+    } else {
+      // If sidebar is already expanded
+      if (category === "dashboard") {
+        // If Dashboard is clicked when expanded, ensure no sub-menu is open and navigate
+        setOpenKategori(""); // Close any currently open sub-menu
+        // Navigation will be handled by the NavLink inside ListMenu directly for Dashboard
+      } else {
+        // If another category is clicked, toggle its sub-menu
+        setOpenKategori((prev) => (prev === category ? "" : category));
+      }
+    }
+  };
 
   return (
-    <div id="sidebar-menu" className="mt-20 font-poppins">
-      <ul id="menu-list" className="space-y-6 flex flex-col items-center">
-        <li>
-          <NavLink id="menu-1" to="dashboard" className={menuClass}>
-            <GoHomeFill /> 
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-2" to="menu" className={menuClass}>
-            <BiFoodMenu />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-3" to="artikel" className={menuClass}>
-            <MdArticle />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-4" to="faq" className={menuClass}>
-            <FaQuestionCircle />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-5" to="team" className={menuClass}>
-            <RiTeamFill />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-6" to="loker" className={menuClass}>
-            <BiSearchAlt2 />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-7" to="testimoni" className={menuClass}>
-            <MdRateReview />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-8" to="booking" className={menuClass}>
-            <AiOutlineBook />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-9" to="contact" className={menuClass}>
-            <AiFillContacts />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-10" to="user" className={menuClass}>
-            <AiOutlineUserSwitch />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-11" to="profil" className={menuClass}>
-            <RiProfileFill />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-12" to="galeri" className={menuClass}>
-            <MdPermMedia />
-          </NavLink>
-        </li>
-        {/* <li>
-          <NavLink id="menu-5" to="error400" className={menuClass}>
-            <BiErrorCircle />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-6" to="error401" className={menuClass}>
-            <BiError />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink id="menu-7" to="error403" className={menuClass}>
-            <BiMessageSquareError />
-          </NavLink>
-        </li> */}
-      </ul>
+    <div
+      id="sidebar"
+      className={`flex min-h-screen ${
+        isExpanded ? "w-64" : "w-20"
+      } flex-col bg-[var(--color-border)] p-6 shadow-lg text-white font-poppins transition-all duration-300 ease-in-out`}
+    >
+      <div id="sidebar-logo" className="flex flex-col items-center">
+        <span
+          id="logo"
+          className="text-[50px] drop-shadow-md cursor-pointer"
+          onClick={toggleSidebar}
+        >
+          <GiCoffeeCup />
+        </span>
+      </div>
+
+      <ListMenu
+        isSidebarExpanded={isExpanded}
+        openKategori={openKategori}
+        onCategoryToggle={handleCategoryToggle}
+      />
+
+      <div id="sidebar-footer" className="mt-auto flex justify-center pt-10">
+        <Link to="/" className="text-[30px] hover:text-yellow-300 transition">
+          <FiLogOut />
+        </Link>
+      </div>
     </div>
   );
 }
