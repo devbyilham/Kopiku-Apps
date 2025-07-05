@@ -20,7 +20,6 @@ export default function Dashboard() {
     { label: "Snack", icon: <PiBowlFoodBold />, active: false },
   ];
 
-  // Contoh data dummy statistik
   const stats = [
     { title: "Pengunjung", value: "1.253", icon: <FaUserFriends /> },
     { title: "Total Produk", value: "48", icon: <FaClipboardList /> },

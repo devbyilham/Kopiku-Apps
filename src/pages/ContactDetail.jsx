@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { KontakAPI } from "../services/KontakAPI";
-
 import AlertBox from "../components/AlertBox";
 import LoadingSpinner from "../components/LoadingSpinner";
 

@@ -4,7 +4,6 @@ export default function AuthLayout() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-header)]  font-[Poppins]">
       <div className="bg-[var(--color-border)] p-8 rounded-2xl shadow-lg w-full max-w-lg text-white">
-        {/* Icon Kopi */}
         <div className="flex justify-center mb-0">
           <img
             src="https://cdn-icons-png.flaticon.com/512/924/924514.png"

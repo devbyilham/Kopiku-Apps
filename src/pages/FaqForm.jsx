@@ -118,7 +118,6 @@ export default function FaqForm() {
   return (
     <div className="flex flex-col items-center w-full min-h-screen bg-[#523628] text-white font-poppins p-3">
 
-      {/* Toast Alert */}
       {toast && (
         <div className="fixed top-5 right-5 z-50 animate-fade-in">
           <AlertBox type={toast.type}>{toast.message}</AlertBox>

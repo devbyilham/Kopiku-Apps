@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ProdukAPI } from "../services/ProdukAPI";
-import AlertBox from "../components/AlertBox"; // Import the AlertBox component
+import AlertBox from "../components/AlertBox";
 
 export default function Menu() {
   const [produkList, setProdukList] = useState([]);
@@ -20,8 +20,8 @@ export default function Menu() {
     gambar: "",
   });
   const [editMode, setEditMode] = useState(false);
-  const [alert, setAlert] = useState(""); // State for managing alert messages
-  const [alertType, setAlertType] = useState("success"); // State for alert type (success or error)
+  const [alert, setAlert] = useState("");
+  const [alertType, setAlertType] = useState("success");
 
   const getProduk = async () => {
     try {
@@ -29,7 +29,7 @@ export default function Menu() {
       setProdukList(data);
     } catch (err) {
       console.error(err);
-      showAlert("⚠️ Gagal memuat daftar produk.", "error"); // Show error alert
+      showAlert("⚠️ Gagal memuat daftar produk.", "error");
     }
   };
 
@@ -37,14 +37,13 @@ export default function Menu() {
     getProduk();
   }, []);
 
-  // Function to show alert messages
   const showAlert = (message, type = "success") => {
     setAlert(message);
     setAlertType(type);
     setTimeout(() => {
       setAlert("");
-      setAlertType("success"); // Reset type to default
-    }, 3000); // Alert disappears after 3 seconds
+      setAlertType("success");
+    }, 3000);
   };
 
   const handleFormChange = (e) => {
@@ -151,10 +150,8 @@ export default function Menu() {
           Daftar Menu Kopi
         </h1>
 
-        {/* AlertBox */}
         {alert && <AlertBox type={alertType}>{alert}</AlertBox>}
 
-        {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
           <div
             className={`px-6 py-4 ${
@@ -167,7 +164,6 @@ export default function Menu() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--color-border)] p-6 text-white">
             {Object.keys(form).map((field) =>
-              // EXCLUDE the 'id' field from being rendered as an input
               field !== "id" ? (
                 <div key={field} className="flex flex-col">
                   <label className="mb-1 text-sm font-medium">
@@ -211,7 +207,6 @@ export default function Menu() {
           </div>
         </div>
 
-        {/* Filter */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <input
             type="text"
@@ -249,7 +244,6 @@ export default function Menu() {
           </select>
         </div>
 
-        {/* Daftar Produk */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProduk.map((item) => (
             <div

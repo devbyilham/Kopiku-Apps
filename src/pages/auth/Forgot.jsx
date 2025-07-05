@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Forgot() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(null); // untuk notifikasi
+  const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -39,7 +39,6 @@ export default function Forgot() {
           />
         </div>
 
-        {/* Notifikasi */}
         {message && (
           <div className="mb-4 text-green-300 text-sm text-center">
             {message}

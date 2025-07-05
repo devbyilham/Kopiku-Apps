@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { UserAPI } from "../services/UserAPI";
-import AlertBox from "../components/AlertBox"; // Import AlertBox
+import AlertBox from "../components/AlertBox";
 
 export default function User() {
   const [userList, setUserList] = useState([]);
   const [form, setForm] = useState({ id: "", nama: "", email: "", role: "" });
   const [editMode, setEditMode] = useState(false);
   const [search, setSearch] = useState("");
-  const [toast, setToast] = useState(null); // State for transient success/error messages
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     fetchUser();
   }, []);
 
-  // Effect to hide the toast notification after 3 seconds
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 3000);
@@ -37,10 +36,8 @@ export default function User() {
   };
 
   const handleSubmit = async () => {
-    // Clear previous toasts before new submission attempt
     setToast(null);
 
-    // Basic client-side validation
     if (!form.nama || !form.email || !form.role) {
       setToast({
         type: "error",
@@ -49,7 +46,6 @@ export default function User() {
       return;
     }
 
-    // Email format validation (optional, but good practice)
     if (!/\S+@\S+\.\S+/.test(form.email)) {
       setToast({ type: "error", message: "Format email tidak valid!" });
       return;
@@ -72,9 +68,9 @@ export default function User() {
         setToast({ type: "success", message: "✅ User berhasil ditambahkan!" });
       }
 
-      fetchUser(); // Reload data
-      setForm({ id: "", nama: "", email: "", role: "" }); // Reset form
-      setEditMode(false); // Exit edit mode
+      fetchUser();
+      setForm({ id: "", nama: "", email: "", role: "" });
+      setEditMode(false);
     } catch (err) {
       console.error("Error saving user:", err);
       setToast({
@@ -87,18 +83,16 @@ export default function User() {
   const handleEdit = (user) => {
     setForm(user);
     setEditMode(true);
-    setToast(null); // Clear any toast when starting edit
+    setToast(null);
   };
 
   const handleDelete = async (id) => {
-    // Clear previous toasts before new deletion attempt
     setToast(null);
 
-    // Removed window.confirm as requested ("tanpa alert")
     try {
       await UserAPI.deleteUser(id);
       setToast({ type: "success", message: "🗑️ User berhasil dihapus!" });
-      fetchUser(); // Reload data
+      fetchUser();
     } catch (err) {
       console.error("Error deleting user:", err);
       setToast({
@@ -119,14 +113,12 @@ export default function User() {
           Manajemen User & Role
         </h1>
 
-        {/* Toast Alert: Render AlertBox when 'toast' state is not null */}
         {toast && (
           <div className="fixed top-5 right-5 z-50 animate-fade-in">
             <AlertBox type={toast.type}>{toast.message}</AlertBox>
           </div>
         )}
 
-        {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
           <div
             className={`px-6 py-4 ${
@@ -192,7 +184,7 @@ export default function User() {
                 onClick={() => {
                   setEditMode(false);
                   setForm({ id: "", nama: "", email: "", role: "" });
-                  setToast(null); // Clear toast when cancelling edit
+                  setToast(null);
                 }}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
@@ -202,7 +194,6 @@ export default function User() {
           </div>
         </div>
 
-        {/* Filter/Search */}
         <div className="mb-6">
           <input
             type="text"
@@ -213,7 +204,6 @@ export default function User() {
           />
         </div>
 
-        {/* Tabel User */}
         <div className="overflow-x-auto">
           <div className="min-w-[700px]">
             <div className="grid grid-cols-5 gap-2 bg-[#8b5e45] py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">

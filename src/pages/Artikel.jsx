@@ -74,10 +74,8 @@ export default function Artikel() {
           Artikel
         </h1>
 
-        {/* AlertBox */}
         {alert && <AlertBox type="success">{alert}</AlertBox>}
 
-        {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
           <div
             className={`px-6 py-4 ${
@@ -148,7 +146,6 @@ export default function Artikel() {
           </div>
         </div>
 
-        {/* Filter/Search */}
         <div className="mb-6">
           <input
             type="text"
@@ -159,7 +156,6 @@ export default function Artikel() {
           />
         </div>
 
-        {/* Tabel Artikel */}
         <div className="bg-[#6c4432] rounded-2xl shadow-lg overflow-hidden border border-white/10">
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto border-collapse">

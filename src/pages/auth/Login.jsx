@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { AuthAPI } from "../../services/AuthAPI"; // pastikan path ini sesuai
+import { AuthAPI } from "../../services/AuthAPI"; 
 
 export default function Login() {
   const [formData, setFormData] = useState({

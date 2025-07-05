@@ -3,7 +3,7 @@ import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TimAPI } from "../services/TimAPI";
 
-import AlertBox from "../components/AlertBox"; // Import AlertBox
+import AlertBox from "../components/AlertBox";
 import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
 
@@ -11,14 +11,13 @@ export default function Team() {
   const [teamList, setTeamList] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); // For error messages
-  const [success, setSuccess] = useState(""); // For success messages
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     loadTeamMembers();
   }, []);
 
-  // Effect to hide the success alert after 3 seconds
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => setSuccess(""), 3000);
@@ -26,7 +25,6 @@ export default function Team() {
     }
   }, [success]);
 
-  // Effect to hide the error alert after 3 seconds (added for consistency with success)
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(""), 3000);
@@ -37,8 +35,7 @@ export default function Team() {
   const loadTeamMembers = async () => {
     try {
       setLoading(true);
-      setError(""); // Clear previous error
-      // No need to clear success here, it's handled by its useEffect
+      setError("");
       const data = await TimAPI.fetchTim();
       setTeamList(data);
     } catch (err) {
@@ -50,18 +47,16 @@ export default function Team() {
   };
 
   const handleDelete = async (id) => {
-    // Removed window.confirm as requested ("tanpa alert")
     try {
       setLoading(true);
-      setError(""); // Clear previous error
-      setSuccess(""); // Clear previous success
+      setError("");
+      setSuccess("");
 
       await TimAPI.deleteTim(id);
       setSuccess("Anggota tim berhasil dihapus!");
-      // The setTimeout to clear success is handled by the dedicated useEffect
-      loadTeamMembers(); // Reload list after deletion
+      loadTeamMembers();
     } catch (err) {
-      setError(`Terjadi kesalahan saat menghapus: ${err.message}`); // More specific error
+      setError(`Terjadi kesalahan saat menghapus: ${err.message}`);
       console.error("Error deleting team member:", err);
     } finally {
       setLoading(false);
@@ -79,10 +74,8 @@ export default function Team() {
           Manajemen Tim
         </h1>
 
-        {/* Render AlertBox for error messages (inline, as per original placement, now auto-hiding) */}
         {error && <AlertBox type="error">{error}</AlertBox>}
 
-        {/* Render AlertBox for success messages (as a fixed toast) */}
         {success && (
           <div className="fixed top-5 right-5 z-50 animate-fade-in">
             <AlertBox type="success">{success}</AlertBox>
@@ -144,7 +137,7 @@ export default function Team() {
                     </Link>
 
                     <button
-                      onClick={() => handleDelete(member.id)} // Directly calls handleDelete without window.confirm
+                      onClick={() => handleDelete(member.id)}
                       className="text-red-400 hover:text-red-500 transition"
                       title="Hapus"
                       disabled={loading}

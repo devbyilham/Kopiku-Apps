@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SUPABASE_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co"; // ganti sesuai project kamu
+const SUPABASE_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co"; 
 const API_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcWRjeXV0aXRzYmNneW1jZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NjM1NTEsImV4cCI6MjA2NTAzOTU1MX0.VqOO8YVWol_3CPibJwgL2zQmcwAwgm9XE-54Yj_FDVI";
 

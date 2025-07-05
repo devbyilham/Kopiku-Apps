@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GaleriAPI } from "../services/GaleriAPI";
-import AlertBox from "../components/AlertBox"; // Import AlertBox
+import AlertBox from "../components/AlertBox"; 
 
 export default function Galeri() {
   const [galeriList, setGaleriList] = useState([]);
@@ -12,25 +12,23 @@ export default function Galeri() {
   });
   const [editMode, setEditMode] = useState(false);
   const [search, setSearch] = useState("");
-  const [alertMessage, setAlertMessage] = useState(""); // State for alert message
-  const [alertType, setAlertType] = useState("success"); // State for alert type
+  const [alertMessage, setAlertMessage] = useState(""); 
+  const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
     fetchGaleri();
   }, []);
 
-  // Effect to hide the alert after 3 seconds
   useEffect(() => {
     if (alertMessage) {
       const timer = setTimeout(() => {
         setAlertMessage("");
-        setAlertType("success"); // Reset type to default
+        setAlertType("success"); 
       }, 3000);
       return () => clearTimeout(timer);
     }
   }, [alertMessage]);
 
-  // Helper function to show alerts
   const showAlert = (message, type = "success") => {
     setAlertMessage(message);
     setAlertType(type);
@@ -40,7 +38,6 @@ export default function Galeri() {
     try {
       const data = await GaleriAPI.fetchGaleri();
       setGaleriList(data);
-      // No success alert for initial fetch, only error if fails
     } catch (err) {
       console.error(err);
       showAlert("⚠️ Gagal memuat daftar galeri.", "error");
@@ -87,7 +84,7 @@ export default function Galeri() {
   const handleEdit = (item) => {
     setForm(item);
     setEditMode(true);
-    setAlertMessage(""); // Clear any previous alerts when starting edit
+    setAlertMessage("");
   };
 
   const handleDelete = async (id) => {
@@ -112,14 +109,12 @@ export default function Galeri() {
           Galeri Media
         </h1>
 
-        {/* AlertBox for messages */}
         {alertMessage && (
           <div className="fixed top-5 right-5 z-50 animate-fade-in">
             <AlertBox type={alertType}>{alertMessage}</AlertBox>
           </div>
         )}
 
-        {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
           <div
             className={`px-6 py-4 ${
@@ -182,7 +177,7 @@ export default function Galeri() {
                 onClick={() => {
                   setEditMode(false);
                   setForm({ id: "", tipe: "Gambar", judul: "", link: "" });
-                  setAlertMessage(""); // Clear alert when cancelling edit
+                  setAlertMessage("");
                 }}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
@@ -192,7 +187,6 @@ export default function Galeri() {
           </div>
         </div>
 
-        {/* Filter/Search */}
         <div className="mb-6">
           <input
             type="text"
@@ -203,7 +197,6 @@ export default function Galeri() {
           />
         </div>
 
-        {/* Tabel Galeri */}
         <div className="overflow-x-auto">
           <div className="min-w-[700px]">
             <div className="grid grid-cols-5 gap-2 bg-[#8b5e45] py-3 rounded-t-lg font-semibold text-sm border-b border-white/30 text-center">
