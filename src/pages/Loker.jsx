@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import Gaji from "../components/Gaji";
+import Gaji from "../components/Gaji"; // Assuming this is a component for salary input
 import { LokerAPI } from "../services/LokerAPI";
+import AlertBox from "../components/AlertBox"; // Import AlertBox
 
 export default function ManajemenLowongan() {
   const [form, setForm] = useState({
@@ -9,17 +10,31 @@ export default function ManajemenLowongan() {
     posisi: "",
     gaji: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); // For form validation errors
   const [lowongans, setLowongans] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [toast, setToast] = useState(null); // For transient success/error messages (API operations)
 
   useEffect(() => {
     loadData();
   }, []);
 
+  // Effect to hide the toast notification after 3 seconds
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   const loadData = async () => {
-    const data = await LokerAPI.fetchLoker();
-    setLowongans(data || []);
+    try {
+      const data = await LokerAPI.fetchLoker();
+      setLowongans(data || []);
+    } catch (err) {
+      console.error("Failed to load job vacancies:", err);
+      setToast({ type: "error", message: "Gagal memuat data lowongan." });
+    }
   };
 
   const validate = () => {
@@ -31,8 +46,10 @@ export default function ManajemenLowongan() {
       newErrors.email = "Format email tidak valid";
     }
     if (!form.posisi.trim()) newErrors.posisi = "Posisi tidak boleh kosong";
-    if (!form.gaji || form.gaji <= 0)
+    // Check if gaji is empty or not a positive number
+    if (!form.gaji || parseFloat(form.gaji) <= 0) {
       newErrors.gaji = "Gaji harus lebih dari 0";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -41,21 +58,42 @@ export default function ManajemenLowongan() {
   const resetForm = () => {
     setForm({ nama: "", email: "", posisi: "", gaji: "" });
     setEditingId(null);
-    setErrors({});
+    setErrors({}); // Clear validation errors
+    setToast(null); // Clear any toast messages when resetting form
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    setToast(null); // Clear previous toasts before new submission
 
-    if (editingId !== null) {
-      await LokerAPI.updateLoker(editingId, form);
-    } else {
-      await LokerAPI.createLoker(form);
+    if (!validate()) {
+      setToast({
+        type: "error",
+        message: "Mohon lengkapi semua data yang diperlukan.",
+      }); // Notify user about validation errors
+      return;
     }
 
-    await loadData();
-    resetForm();
+    try {
+      if (editingId !== null) {
+        await LokerAPI.updateLoker(editingId, form);
+        setToast({ type: "success", message: "Lowongan berhasil diperbarui!" });
+      } else {
+        await LokerAPI.createLoker(form);
+        setToast({
+          type: "success",
+          message: "Lowongan berhasil ditambahkan!",
+        });
+      }
+      await loadData(); // Reload data after successful operation
+      resetForm();
+    } catch (err) {
+      console.error("Error saving job vacancy:", err);
+      setToast({
+        type: "error",
+        message: "Gagal menyimpan lowongan. Silakan coba lagi.",
+      });
+    }
   };
 
   const handleEdit = (lowongan) => {
@@ -66,12 +104,24 @@ export default function ManajemenLowongan() {
       posisi: lowongan.posisi,
       gaji: lowongan.gaji,
     });
+    setErrors({}); // Clear validation errors when editing
+    setToast(null); // Clear any toast messages when starting edit
   };
 
   const handleDelete = async (id) => {
-    await LokerAPI.deleteLoker(id);
-    await loadData();
-    if (editingId === id) resetForm();
+    // Removed window.confirm as requested ("tanpa alert")
+    try {
+      await LokerAPI.deleteLoker(id);
+      setToast({ type: "success", message: "Lowongan berhasil dihapus!" });
+      await loadData();
+      if (editingId === id) resetForm();
+    } catch (err) {
+      console.error("Error deleting job vacancy:", err);
+      setToast({
+        type: "error",
+        message: "Gagal menghapus lowongan. Silakan coba lagi.",
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -85,6 +135,13 @@ export default function ManajemenLowongan() {
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Manajemen Lowongan
         </h1>
+
+        {/* Toast Alert: Render AlertBox when 'toast' state is not null */}
+        {toast && (
+          <div className="fixed top-5 right-5 z-50 animate-fade-in">
+            <AlertBox type={toast.type}>{toast.message}</AlertBox>
+          </div>
+        )}
 
         {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
@@ -143,7 +200,7 @@ export default function ManajemenLowongan() {
               </div>
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium">Gaji</label>
-                <Gaji
+                <Gaji // Assuming Gaji component handles its own input and passes value via onChange
                   label=""
                   type="number"
                   name="gaji"
@@ -161,12 +218,14 @@ export default function ManajemenLowongan() {
                 <div className="right md:col-span-2 flex justify-end">
                   <div
                     className={`mt-2 p-2 border-l-4 ${
-                      form.gaji <= 2000000
+                      form.gaji <= 10000000 // Changed from 2000000 to 10000000 for "Gaji Pas"
                         ? "bg-blue-100 border-blue-500 text-blue-800"
                         : "bg-red-100 border-red-500 text-red-800"
                     }`}
                   >
-                    <p className="font-semibold">
+                    <p className="font-semibold text-black">
+                      {" "}
+                      {/* Changed text-blue-800/text-red-800 to text-black for visibility with bg-blue-100/bg-red-100 */}
                       {form.gaji <= 10000000
                         ? "Gaji Pas"
                         : "Gaji Kemahalan, turunkan dikit😅"}
@@ -213,13 +272,16 @@ export default function ManajemenLowongan() {
             {lowongans.map((lowongan, i) => (
               <div
                 key={lowongan.id}
-                className="grid grid-cols-6 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
+                className="grid grid-cols-6 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center border-b border-white/10 last:border-b-0"
               >
                 <div>{i + 1}</div>
                 <div>{lowongan.nama}</div>
                 <div>{lowongan.email}</div>
                 <div>{lowongan.posisi}</div>
-                <div>Rp {Number(lowongan.gaji).toLocaleString()}</div>
+                <div>
+                  Rp {Number(lowongan.gaji).toLocaleString("id-ID")}
+                </div>{" "}
+                {/* Format to Indonesian Rupiah */}
                 <div className="flex flex-row justify-center gap-3">
                   <button
                     className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"

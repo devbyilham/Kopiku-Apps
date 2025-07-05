@@ -3,7 +3,7 @@ import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TimAPI } from "../services/TimAPI";
 
-import AlertBox from "../components/AlertBox";
+import AlertBox from "../components/AlertBox"; // Import AlertBox
 import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
 
@@ -11,17 +11,34 @@ export default function Team() {
   const [teamList, setTeamList] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState(""); // For error messages
+  const [success, setSuccess] = useState(""); // For success messages
 
   useEffect(() => {
     loadTeamMembers();
   }, []);
 
+  // Effect to hide the success alert after 3 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  // Effect to hide the error alert after 3 seconds (added for consistency with success)
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const loadTeamMembers = async () => {
     try {
       setLoading(true);
-      setError("");
+      setError(""); // Clear previous error
+      // No need to clear success here, it's handled by its useEffect
       const data = await TimAPI.fetchTim();
       setTeamList(data);
     } catch (err) {
@@ -33,23 +50,21 @@ export default function Team() {
   };
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Yakin ingin menghapus anggota ini?");
-    if (confirmDelete) {
-      try {
-        setLoading(true);
-        setError("");
-        setSuccess("");
+    // Removed window.confirm as requested ("tanpa alert")
+    try {
+      setLoading(true);
+      setError(""); // Clear previous error
+      setSuccess(""); // Clear previous success
 
-        await TimAPI.deleteTim(id);
-        setSuccess("Anggota tim berhasil dihapus!");
-        setTimeout(() => setSuccess(""), 3000);
-        loadTeamMembers();
-      } catch (err) {
-        setError(`Terjadi kesalahan: ${err.message}`);
-        console.error("Error deleting team member:", err);
-      } finally {
-        setLoading(false);
-      }
+      await TimAPI.deleteTim(id);
+      setSuccess("Anggota tim berhasil dihapus!");
+      // The setTimeout to clear success is handled by the dedicated useEffect
+      loadTeamMembers(); // Reload list after deletion
+    } catch (err) {
+      setError(`Terjadi kesalahan saat menghapus: ${err.message}`); // More specific error
+      console.error("Error deleting team member:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,15 +74,18 @@ export default function Team() {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-[#523628] text-white font-poppins">
-      <div className="w-full  max-w-6xl  space-y-6 p-3">
+      <div className="w-full max-w-6xl space-y-6 p-3">
         <h1 className="text-3xl font-bold text-center drop-shadow-md mb-8">
           Manajemen Tim
         </h1>
 
+        {/* Render AlertBox for error messages (inline, as per original placement, now auto-hiding) */}
         {error && <AlertBox type="error">{error}</AlertBox>}
+
+        {/* Render AlertBox for success messages (as a fixed toast) */}
         {success && (
-          <div className="bg-green-600 text-white p-3 rounded-lg mb-4 text-center shadow-md">
-            {success}
+          <div className="fixed top-5 right-5 z-50 animate-fade-in">
+            <AlertBox type="success">{success}</AlertBox>
           </div>
         )}
 
@@ -99,12 +117,6 @@ export default function Team() {
           </p>
         )}
 
-        {!loading && filteredTeam.length === 0 && error && (
-          <div className="p-8 text-center text-red-500 text-lg font-medium">
-            <EmptyState text={`${error} Coba lagi nanti.`} />
-          </div>
-        )}
-
         {!loading && filteredTeam.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {filteredTeam.map((member) => (
@@ -132,7 +144,7 @@ export default function Team() {
                     </Link>
 
                     <button
-                      onClick={() => handleDelete(member.id)}
+                      onClick={() => handleDelete(member.id)} // Directly calls handleDelete without window.confirm
                       className="text-red-400 hover:text-red-500 transition"
                       title="Hapus"
                       disabled={loading}

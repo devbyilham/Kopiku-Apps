@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GaleriAPI } from "../services/GaleriAPI";
+import AlertBox from "../components/AlertBox"; // Import AlertBox
 
 export default function Galeri() {
   const [galeriList, setGaleriList] = useState([]);
@@ -11,14 +12,39 @@ export default function Galeri() {
   });
   const [editMode, setEditMode] = useState(false);
   const [search, setSearch] = useState("");
+  const [alertMessage, setAlertMessage] = useState(""); // State for alert message
+  const [alertType, setAlertType] = useState("success"); // State for alert type
 
   useEffect(() => {
     fetchGaleri();
   }, []);
 
+  // Effect to hide the alert after 3 seconds
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+        setAlertType("success"); // Reset type to default
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
+
+  // Helper function to show alerts
+  const showAlert = (message, type = "success") => {
+    setAlertMessage(message);
+    setAlertType(type);
+  };
+
   const fetchGaleri = async () => {
-    const data = await GaleriAPI.fetchGaleri();
-    setGaleriList(data);
+    try {
+      const data = await GaleriAPI.fetchGaleri();
+      setGaleriList(data);
+      // No success alert for initial fetch, only error if fails
+    } catch (err) {
+      console.error(err);
+      showAlert("⚠️ Gagal memuat daftar galeri.", "error");
+    }
   };
 
   const handleChange = (e) => {
@@ -27,35 +53,52 @@ export default function Galeri() {
   };
 
   const handleSubmit = async () => {
-    if (!form.judul || !form.link || !form.tipe) return;
-
-    if (editMode) {
-      await GaleriAPI.updateGaleri(form.id, {
-        judul: form.judul,
-        link: form.link,
-        tipe: form.tipe,
-      });
-    } else {
-      await GaleriAPI.createGaleri({
-        judul: form.judul,
-        link: form.link,
-        tipe: form.tipe,
-      });
+    if (!form.judul || !form.link || !form.tipe) {
+      showAlert("Pastikan semua kolom terisi!", "error");
+      return;
     }
 
-    fetchGaleri();
-    setForm({ id: "", tipe: "Gambar", judul: "", link: "" });
-    setEditMode(false);
+    try {
+      if (editMode) {
+        await GaleriAPI.updateGaleri(form.id, {
+          judul: form.judul,
+          link: form.link,
+          tipe: form.tipe,
+        });
+        showAlert("✅ Media berhasil diperbarui!", "success");
+      } else {
+        await GaleriAPI.createGaleri({
+          judul: form.judul,
+          link: form.link,
+          tipe: form.tipe,
+        });
+        showAlert("✅ Media berhasil ditambahkan!", "success");
+      }
+
+      fetchGaleri();
+      setForm({ id: "", tipe: "Gambar", judul: "", link: "" });
+      setEditMode(false);
+    } catch (err) {
+      console.error(err);
+      showAlert("❌ Gagal menyimpan media. Silakan coba lagi.", "error");
+    }
   };
 
   const handleEdit = (item) => {
     setForm(item);
     setEditMode(true);
+    setAlertMessage(""); // Clear any previous alerts when starting edit
   };
 
   const handleDelete = async (id) => {
-    await GaleriAPI.deleteGaleri(id);
-    fetchGaleri();
+    try {
+      await GaleriAPI.deleteGaleri(id);
+      fetchGaleri();
+      showAlert("🗑️ Media berhasil dihapus!", "success");
+    } catch (err) {
+      console.error(err);
+      showAlert("❌ Gagal menghapus media. Silakan coba lagi.", "error");
+    }
   };
 
   const filtered = galeriList.filter((item) =>
@@ -68,6 +111,13 @@ export default function Galeri() {
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Galeri Media
         </h1>
+
+        {/* AlertBox for messages */}
+        {alertMessage && (
+          <div className="fixed top-5 right-5 z-50 animate-fade-in">
+            <AlertBox type={alertType}>{alertMessage}</AlertBox>
+          </div>
+        )}
 
         {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
@@ -132,6 +182,7 @@ export default function Galeri() {
                 onClick={() => {
                   setEditMode(false);
                   setForm({ id: "", tipe: "Gambar", judul: "", link: "" });
+                  setAlertMessage(""); // Clear alert when cancelling edit
                 }}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
@@ -162,48 +213,55 @@ export default function Galeri() {
               <div>Preview</div>
               <div>Aksi</div>
             </div>
-            {filtered.map((item, index) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
-              >
-                <div>{index + 1}</div>
-                <div>{item.judul}</div>
-                <div>{item.tipe}</div>
-                <div className="overflow-hidden max-h-[100px]">
-                  {item.tipe === "Gambar" ? (
-                    <img
-                      src={item.link}
-                      alt={item.judul}
-                      className="mx-auto h-24 object-contain rounded"
-                    />
-                  ) : (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-300 underline"
-                    >
-                      Lihat Video
-                    </a>
-                  )}
-                </div>
-                <div className="flex flex-row justify-center gap-3">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
-                  >
-                    Hapus
-                  </button>
-                </div>
+            {filtered.length === 0 ? (
+              <div className="py-4 text-center text-white/70 bg-[var(--color-border)]">
+                Tidak ada media ditemukan.
               </div>
-            ))}
+            ) : (
+              filtered.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center border-b border-white/10 last:border-b-0"
+                >
+                  <div>{index + 1}</div>
+                  <div>{item.judul}</div>
+                  <div>{item.tipe}</div>
+                  <div className="overflow-hidden max-h-[100px]">
+                    {item.tipe === "Gambar" ? (
+                      <img
+                        src={item.link}
+                        alt={item.judul}
+                        className="mx-auto w-24 h-24 object-cover rounded"
+                      />
+                    ) : (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-300 underline"
+                      >
+                        Lihat Video
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="flex flex-row justify-center gap-3">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

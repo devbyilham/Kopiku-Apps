@@ -1,19 +1,34 @@
 import { useEffect, useState } from "react";
 import { UserAPI } from "../services/UserAPI";
+import AlertBox from "../components/AlertBox"; // Import AlertBox
 
 export default function User() {
   const [userList, setUserList] = useState([]);
   const [form, setForm] = useState({ id: "", nama: "", email: "", role: "" });
   const [editMode, setEditMode] = useState(false);
   const [search, setSearch] = useState("");
+  const [toast, setToast] = useState(null); // State for transient success/error messages
 
   useEffect(() => {
     fetchUser();
   }, []);
 
+  // Effect to hide the toast notification after 3 seconds
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   const fetchUser = async () => {
-    const data = await UserAPI.fetchUser();
-    setUserList(data);
+    try {
+      const data = await UserAPI.fetchUser();
+      setUserList(data);
+    } catch (err) {
+      console.error("Failed to load users:", err);
+      setToast({ type: "error", message: "Gagal memuat data user." });
+    }
   };
 
   const handleChange = (e) => {
@@ -22,35 +37,75 @@ export default function User() {
   };
 
   const handleSubmit = async () => {
-    if (!form.nama || !form.email || !form.role) return;
+    // Clear previous toasts before new submission attempt
+    setToast(null);
 
-    if (editMode) {
-      await UserAPI.updateUser(form.id, {
-        nama: form.nama,
-        email: form.email,
-        role: form.role,
+    // Basic client-side validation
+    if (!form.nama || !form.email || !form.role) {
+      setToast({
+        type: "error",
+        message: "Nama, email, dan role tidak boleh kosong!",
       });
-    } else {
-      await UserAPI.createUser({
-        nama: form.nama,
-        email: form.email,
-        role: form.role,
-      });
+      return;
     }
 
-    fetchUser();
-    setForm({ id: "", nama: "", email: "", role: "" });
-    setEditMode(false);
+    // Email format validation (optional, but good practice)
+    if (!/\S+@\S+\.\S+/.test(form.email)) {
+      setToast({ type: "error", message: "Format email tidak valid!" });
+      return;
+    }
+
+    try {
+      if (editMode) {
+        await UserAPI.updateUser(form.id, {
+          nama: form.nama,
+          email: form.email,
+          role: form.role,
+        });
+        setToast({ type: "success", message: "✅ User berhasil diperbarui!" });
+      } else {
+        await UserAPI.createUser({
+          nama: form.nama,
+          email: form.email,
+          role: form.role,
+        });
+        setToast({ type: "success", message: "✅ User berhasil ditambahkan!" });
+      }
+
+      fetchUser(); // Reload data
+      setForm({ id: "", nama: "", email: "", role: "" }); // Reset form
+      setEditMode(false); // Exit edit mode
+    } catch (err) {
+      console.error("Error saving user:", err);
+      setToast({
+        type: "error",
+        message: "❌ Gagal menyimpan user. Silakan coba lagi.",
+      });
+    }
   };
 
   const handleEdit = (user) => {
     setForm(user);
     setEditMode(true);
+    setToast(null); // Clear any toast when starting edit
   };
 
   const handleDelete = async (id) => {
-    await UserAPI.deleteUser(id);
-    fetchUser();
+    // Clear previous toasts before new deletion attempt
+    setToast(null);
+
+    // Removed window.confirm as requested ("tanpa alert")
+    try {
+      await UserAPI.deleteUser(id);
+      setToast({ type: "success", message: "🗑️ User berhasil dihapus!" });
+      fetchUser(); // Reload data
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      setToast({
+        type: "error",
+        message: "❌ Gagal menghapus user. Silakan coba lagi.",
+      });
+    }
   };
 
   const filtered = userList.filter((u) =>
@@ -63,6 +118,13 @@ export default function User() {
         <h1 className="text-3xl font-bold text-center mb-6 drop-shadow-md">
           Manajemen User & Role
         </h1>
+
+        {/* Toast Alert: Render AlertBox when 'toast' state is not null */}
+        {toast && (
+          <div className="fixed top-5 right-5 z-50 animate-fade-in">
+            <AlertBox type={toast.type}>{toast.message}</AlertBox>
+          </div>
+        )}
 
         {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
@@ -130,6 +192,7 @@ export default function User() {
                 onClick={() => {
                   setEditMode(false);
                   setForm({ id: "", nama: "", email: "", role: "" });
+                  setToast(null); // Clear toast when cancelling edit
                 }}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
@@ -160,31 +223,37 @@ export default function User() {
               <div>Role</div>
               <div>Aksi</div>
             </div>
-            {filtered.map((user, index) => (
-              <div
-                key={user.id}
-                className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center"
-              >
-                <div>{index + 1}</div> 
-                <div>{user.nama}</div>
-                <div>{user.email}</div>
-                <div>{user.role}</div>
-                <div className="flex justify-center gap-3">
-                  <button
-                    onClick={() => handleEdit(user)}
-                    className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
-                  >
-                    Hapus
-                  </button>
-                </div>
+            {filtered.length === 0 ? (
+              <div className="p-4 bg-[#6c4432] text-center text-white rounded-b-lg">
+                Tidak ada user ditemukan.
               </div>
-            ))}
+            ) : (
+              filtered.map((user, index) => (
+                <div
+                  key={user.id}
+                  className="grid grid-cols-5 items-center py-4 gap-2 bg-[var(--color-border)] transition text-sm text-center border-b border-white/10 last:border-b-0"
+                >
+                  <div>{index + 1}</div>
+                  <div>{user.nama}</div>
+                  <div>{user.email}</div>
+                  <div>{user.role}</div>
+                  <div className="flex justify-center gap-3">
+                    <button
+                      onClick={() => handleEdit(user)}
+                      className="px-3 py-2 text-xs bg-yellow-500 hover:bg-yellow-600 rounded text-white"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="px-3 py-2 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

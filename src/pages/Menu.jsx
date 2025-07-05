@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ProdukAPI } from "../services/ProdukAPI";
+import AlertBox from "../components/AlertBox"; // Import the AlertBox component
 
 export default function Menu() {
   const [produkList, setProdukList] = useState([]);
@@ -8,7 +9,7 @@ export default function Menu() {
     selectedRating: "",
     selectedAsal: "",
   });
-  const [formAdd, setFormAdd] = useState({
+  const [form, setForm] = useState({
     nama: "",
     deskripsi: "",
     rating: "",
@@ -18,8 +19,9 @@ export default function Menu() {
     takaran: "",
     gambar: "",
   });
-  const [formEdit, setFormEdit] = useState({ ...formAdd });
-  const [editId, setEditId] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [alert, setAlert] = useState(""); // State for managing alert messages
+  const [alertType, setAlertType] = useState("success"); // State for alert type (success or error)
 
   const getProduk = async () => {
     try {
@@ -27,6 +29,7 @@ export default function Menu() {
       setProdukList(data);
     } catch (err) {
       console.error(err);
+      showAlert("⚠️ Gagal memuat daftar produk.", "error"); // Show error alert
     }
   };
 
@@ -34,11 +37,44 @@ export default function Menu() {
     getProduk();
   }, []);
 
-  const handleAdd = async () => {
+  // Function to show alert messages
+  const showAlert = (message, type = "success") => {
+    setAlert(message);
+    setAlertType(type);
+    setTimeout(() => {
+      setAlert("");
+      setAlertType("success"); // Reset type to default
+    }, 3000); // Alert disappears after 3 seconds
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: name === "rating" || name === "harga" ? parseFloat(value) : value,
+    });
+  };
+
+  const handleSubmit = async () => {
     try {
-      await ProdukAPI.createProduk(formAdd);
+      if (editMode) {
+        await ProdukAPI.updateProduk(form.id, {
+          nama: form.nama,
+          deskripsi: form.deskripsi,
+          rating: form.rating,
+          harga: form.harga,
+          asal: form.asal,
+          kafein: form.kafein,
+          takaran: form.takaran,
+          gambar: form.gambar,
+        });
+        showAlert("✅ Menu kopi berhasil diperbarui!", "success");
+      } else {
+        await ProdukAPI.createProduk(form);
+        showAlert("✅ Menu kopi berhasil ditambahkan!", "success");
+      }
       getProduk();
-      setFormAdd({
+      setForm({
         nama: "",
         deskripsi: "",
         rating: "",
@@ -48,28 +84,21 @@ export default function Menu() {
         takaran: "",
         gambar: "",
       });
+      setEditMode(false);
     } catch (err) {
       console.error(err);
+      showAlert("❌ Gagal menyimpan menu kopi. Silakan coba lagi.", "error");
     }
   };
 
   const handleEdit = async (id) => {
     try {
       const item = await ProdukAPI.getProdukById(id);
-      setFormEdit(item);
-      setEditId(id);
+      setForm(item);
+      setEditMode(true);
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await ProdukAPI.updateProduk(editId, formEdit);
-      getProduk();
-      setEditId(null);
-    } catch (err) {
-      console.error(err);
+      showAlert("⚠️ Gagal memuat data menu untuk diedit.", "error");
     }
   };
 
@@ -77,13 +106,25 @@ export default function Menu() {
     try {
       await ProdukAPI.deleteProduk(id);
       getProduk();
+      showAlert("🗑️ Menu kopi berhasil dihapus!", "success");
     } catch (err) {
       console.error(err);
+      showAlert("❌ Gagal menghapus menu kopi. Silakan coba lagi.", "error");
     }
   };
 
   const cancelEdit = () => {
-    setEditId(null);
+    setEditMode(false);
+    setForm({
+      nama: "",
+      deskripsi: "",
+      rating: "",
+      harga: "",
+      asal: "",
+      kafein: "",
+      takaran: "",
+      gambar: "",
+    });
   };
 
   const handleChange = (e) => {
@@ -110,85 +151,65 @@ export default function Menu() {
           Daftar Menu Kopi
         </h1>
 
-        {/* Form Tambah */}
+        {/* AlertBox */}
+        {alert && <AlertBox type={alertType}>{alert}</AlertBox>}
+
+        {/* Form Tambah/Edit */}
         <div className="mb-10 rounded-lg shadow-md overflow-hidden">
-          <div className="bg-[#8b5e45] px-6 py-4">
+          <div
+            className={`px-6 py-4 ${
+              editMode ? "bg-yellow-700" : "bg-[#8b5e45]"
+            }`}
+          >
             <h2 className="text-xl font-bold text-white">
-              ➕ Tambah Menu Kopi
+              {editMode ? "✏️ Edit Menu Kopi" : "➕ Tambah Menu Kopi"}
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#6c4432] p-6 text-white">
-            {Object.keys(formAdd).map((field) => (
-              <div key={field} className="flex flex-col">
-                <label className="mb-1 text-sm font-medium">
-                  {field.charAt(0).toUpperCase() + field.slice(1)}
-                </label>
-                <input
-                  type={field === "rating" ? "number" : "text"}
-                  name={field}
-                  value={formAdd[field]}
-                  onChange={(e) =>
-                    setFormAdd({ ...formAdd, [field]: e.target.value })
-                  }
-                  className="p-2 rounded text-black bg-white focus:outline-none"
-                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-end bg-[#6c4432] px-6 py-4 border-t border-white/20">
-            <button
-              onClick={handleAdd}
-              className="px-6 py-2 bg-green-500 hover:bg-green-600 rounded text-white font-semibold"
-            >
-              Tambah
-            </button>
-          </div>
-        </div>
-
-        {/* Form Edit */}
-        {editId && (
-          <div className="mb-10 rounded-lg shadow-md overflow-hidden">
-            <div className="bg-yellow-700 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">
-                ✏️ Edit Menu Kopi
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#6c4432] p-6 text-white">
-              {Object.keys(formEdit).map((field) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--color-border)] p-6 text-white">
+            {Object.keys(form).map((field) =>
+              // EXCLUDE the 'id' field from being rendered as an input
+              field !== "id" ? (
                 <div key={field} className="flex flex-col">
                   <label className="mb-1 text-sm font-medium">
                     {field.charAt(0).toUpperCase() + field.slice(1)}
                   </label>
                   <input
-                    type={field === "rating" ? "number" : "text"}
-                    name={field}
-                    value={formEdit[field]}
-                    onChange={(e) =>
-                      setFormEdit({ ...formEdit, [field]: e.target.value })
+                    type={
+                      field === "rating" || field === "harga"
+                        ? "number"
+                        : "text"
                     }
+                    name={field}
+                    value={form[field]}
+                    onChange={handleFormChange}
                     className="p-2 rounded text-black bg-white focus:outline-none"
                     placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                   />
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-end gap-3 bg-[#6c4432] px-6 py-4 border-t border-white/20">
-              <button
-                onClick={handleUpdate}
-                className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 rounded text-white font-semibold"
-              >
-                Simpan
-              </button>
+              ) : null
+            )}
+          </div>
+          <div className="flex justify-end gap-3 bg-[var(--color-border)] px-6 py-4 border-t border-white/20">
+            <button
+              onClick={handleSubmit}
+              className={`px-6 py-2 ${
+                editMode
+                  ? "bg-yellow-500 hover:bg-yellow-600"
+                  : "bg-green-500 hover:bg-green-600"
+              } rounded text-white font-semibold`}
+            >
+              {editMode ? "Simpan" : "Tambah"}
+            </button>
+            {editMode && (
               <button
                 onClick={cancelEdit}
                 className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded text-white font-semibold"
               >
                 Batal
               </button>
-            </div>
+            )}
           </div>
-        )}
+        </div>
 
         {/* Filter */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -196,7 +217,7 @@ export default function Menu() {
             type="text"
             name="searchTerm"
             placeholder="🔍 Cari kopi..."
-            className="p-2 border bg-[#6c4432] rounded text-white"
+            className="p-2 border bg-[var(--color-border)] rounded text-white"
             onChange={handleChange}
             value={dataForm.searchTerm}
           />
@@ -233,7 +254,7 @@ export default function Menu() {
           {filteredProduk.map((item) => (
             <div
               key={item.id}
-              className="bg-[#6c4432] rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02]"
+              className="bg-[var(--color-border)] rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02]"
             >
               <img
                 src={item.gambar}

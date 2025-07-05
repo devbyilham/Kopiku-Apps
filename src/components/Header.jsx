@@ -34,7 +34,7 @@ export default function Header() {
     <div className="font-poppins flex justify-between items-center px-6 py-4 bg-[var(--color-header)] text-[var(--color-white)] shadow-md flex-wrap gap-4">
       {/* Kiri: Salam dan Info */}
       <div className="flex flex-col">
-        <p className="text-lg font-bold">Selamat datang di Kopiku</p>
+        <p className="text-lg font-bold">Selamat datang di KopiKu</p>
         <h2>{adviceInfo}</h2>
       </div>
 
