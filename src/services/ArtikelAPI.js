@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://avbxibrsozgpnspuvzrz.supabase.co/rest/v1/artikel";
-const API_KEY = "ISI_PUBLISHABLE_KEY_SUPABASE_BARU";
+const SUPABASE_URL = "https://avbxibrsozgpnspuvzrz.supabase.co";
+const API_URL = `${SUPABASE_URL}/rest/v1/artikel`;
+const API_KEY = "sb_publishable_-zMWSPmtjojiBxJiykztZg_49vaYSLX";
 
 const headers = {
   apikey: API_KEY,
@@ -16,7 +17,12 @@ export const ArtikelAPI = {
   },
 
   async createArtikel(data) {
-    const response = await axios.post(API_URL, data, { headers });
+    const response = await axios.post(API_URL, data, {
+      headers: {
+        ...headers,
+        Prefer: "return=representation",
+      },
+    });
     return response.data;
   },
 
@@ -26,16 +32,19 @@ export const ArtikelAPI = {
 
   async updateArtikel(id, data) {
     const response = await axios.patch(`${API_URL}?id=eq.${id}`, data, {
-      headers,
+      headers: {
+        ...headers,
+        Prefer: "return=representation",
+      },
     });
     return response.data;
   },
 
   async getArtikelById(id) {
-    const response = await axios.get(`${API_URL}?id=eq.${id}`, { headers });
-    if (response.data && response.data.length > 0) {
-      return response.data[0];
-    }
-    return null;
+    const response = await axios.get(`${API_URL}?id=eq.${id}`, {
+      headers,
+    });
+
+    return response.data?.[0] ?? null;
   },
 };
