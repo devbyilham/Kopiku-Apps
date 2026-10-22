@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const SUPABASE_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co"; 
-const API_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcWRjeXV0aXRzYmNneW1jZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NjM1NTEsImV4cCI6MjA2NTAzOTU1MX0.VqOO8YVWol_3CPibJwgL2zQmcwAwgm9XE-54Yj_FDVI";
+const SUPABASE_URL = "https://avbxibrsozgpnspuvzrz.supabase.co";
+const API_KEY = "ISI_PUBLISHABLE_KEY_SUPABASE_BARU";
 
 export const AuthAPI = {
   register: async (email, password) => {
@@ -63,7 +62,9 @@ export const AuthAPI = {
     } catch (err) {
       return {
         data: null,
-        error: err.response?.data || { message: "Reset password failed." },
+        error: err.response?.data || {
+          message: "Reset password failed.",
+        },
       };
     }
   },
@@ -85,7 +86,9 @@ export const AuthAPI = {
     } catch (err) {
       return {
         data: null,
-        error: err.response?.data || { message: "Update password failed." },
+        error: err.response?.data || {
+          message: "Update password failed.",
+        },
       };
     }
   },
