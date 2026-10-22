@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const SUPABASE_URL = "https://avbxibrsozgpnspuvzrz.supabase.co";
-const API_KEY = "ISI_PUBLISHABLE_KEY_SUPABASE_BARU";
+const API_KEY = "sb_publishable_-zMWSPmtjojiBxJiykztZg_49vaYSLX";
 
 export const AuthAPI = {
   register: async (email, password) => {
