@@ -117,11 +117,3 @@ proyek-uas/
 **Muhammad Ilham**
 
 - GitHub: [@devbyilham](https://github.com/devbyilham)
-
----
-
-<div align="center">
-
-Developed as a web development project.
-
-</div>
