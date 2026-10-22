@@ -13,7 +13,7 @@ A web-based application for managing coffee shop operations through a centralize
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 
-[Live Demo](https://proyek-uas.vercel.app/) · [Repository](https://github.com/devbyilham/kopiku-apps)
+[Live Demo](https://proyek-uas.vercel.app/) 
 
 </div>
 
