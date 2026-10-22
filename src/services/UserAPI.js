@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://cjqdcyutitsbcgymcfrq.supabase.co/rest/v1/user";
-const API_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcWRjeXV0aXRzYmNneW1jZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NjM1NTEsImV4cCI6MjA2NTAzOTU1MX0.VqOO8YVWol_3CPibJwgL2zQmcwAwgm9XE-54Yj_FDVI";
+const API_URL = "https://avbxibrsozgpnspuvzrz.supabase.co/rest/v1/user";
+const API_KEY = "ISI_PUBLISHABLE_KEY_SUPABASE_BARU";
 
 const headers = {
   apikey: API_KEY,
