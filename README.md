@@ -14,6 +14,14 @@ A web-based application for managing coffee shop operations through a centralize
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 
 [Live Demo](https://kopiku-apps.vercel.app/) 
+## Demo Login
+
+Use the following credentials to access the application:
+
+| Field | Value |
+|---|---|
+| Email | `admin@gmail.com` |
+| Password | `admin123` |
 
 </div>
 
